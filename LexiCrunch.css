@@ -1,0 +1,12 @@
+*{
+    text-align: center;
+}
+
+h1 {
+    font-size: 4rem; // one rem is approximately 16px
+}
+
+#interface label{
+    font-size: large;
+    padding-top: 3rem;
+}

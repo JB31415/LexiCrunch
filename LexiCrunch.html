@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexiCrunch</title>
+    <link href="LexiCrunch.css" rel="stylesheet">
+    <script src="LexiCrunch.js"> </script>
+</head>
+<body onload = "getScore();">
+    <h1>LexiCrunch</h1>
+    <div class="scoreboard">
+        <label>Your Score is: </label>
+        <label id="lcScore">0</label>
+        <span id="data"></span>
+    </div>
+
+    <br>
+    <br>
+
+    <section class = interface>
+        <form method="POST">
+            <label>Type in a word.</label>
+            <br>
+            <br>
+            <input name="answer" id="answer" type="text" />
+            <br>
+            <br>
+            <input id="enter" type="button" value="Enter" onclick="updateScore()" />
+        </form>
+
+    </section>
+</body>
+</html>
