@@ -11,6 +11,18 @@ function getScore()
     lcScore.innerHTML=score;
 }
 
+function stringToButton() {
+
+    let word = "lexicrunch";
+    
+    for (i = 1; i <= 10; i++) {
+        let letter = word.charAt(i - 1);
+        let newTile = document.getElementById('t' + i.toString());
+        newTile.innerHTML = letter;
+    }
+       
+
+}
 
 function updateScore()
 {
