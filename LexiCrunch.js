@@ -13,7 +13,14 @@ function getScore()
 
 function stringToButton() {
 
-    let word = "lexicrunch";
+    const fs = require('fs');
+
+    fs.readFile('10 letter words.txt', 'utf8', function(err, data) {
+        if (err) throw err;};
+    const lines = data.split('\n');
+    const randomLine = lines[Math.floor(Math.random() * lines.length)];
+
+    let word = randomLine;
     
     for (i = 1; i <= 10; i++) {
         let letter = word.charAt(i - 1);
