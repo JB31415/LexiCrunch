@@ -7,7 +7,7 @@
     <link href="LexiCrunch.css" rel="stylesheet">
     <script src="LexiCrunch.js"> </script>
 </head>
-<body onload = "getScore();">
+<body>
     <h1>LexiCrunch</h1>
     <div class="scoreboard">
         <label>Your Score is: </label>
@@ -17,9 +17,23 @@
 
     <br>
     <br>
-
-    <section class = interface>
-        <form method="POST">
+        <section id="word-bank">
+            <div class="first-row">
+                <button class="tile" id="t1" value="" onclick="generateButton('t1');">a</button>
+                <button class="tile" id="t2" value="" onclick="generateButton('t2');">b</button>
+                <button class="tile" id="t3" value="" onclick="generateButton('t3');">c</button>
+                <button class="tile" id="t4" value="" onclick="generateButton('t4');">d</button>
+                <button class="tile" id="t5" value="" onclick="generateButton('t5');">e</button>
+            </div>
+            <div class="second-row">
+                <button class="tile" id="t6"  value="" onclick="generateButton('t6');">f</button>
+                <button class="tile" id="t7"  value="" onclick="generateButton('t7');">g</button>
+                <button class="tile" id="t8"  value="" onclick="generateButton('t8');">h</button>
+                <button class="tile" id="t9"  value="" onclick="generateButton('t9');">i</button>
+                <button class="tile" id="t10" value="" onclick="generateButton('t10');">j</button>
+            </div>
+        </section>
+        <form method="POST" onsubmit="return false">
             <label>Type in a word.</label>
             <br>
             <br>
@@ -27,8 +41,8 @@
             <br>
             <br>
             <input id="enter" type="button" value="Enter" onclick="updateScore()" />
+            <button onclick="stringToButton();">click</button>
         </form>
 
-    </section>
 </body>
 </html>
