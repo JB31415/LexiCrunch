@@ -12,24 +12,21 @@ function getScore()
 }
 
 function stringToButton() {
-
-    const fs = require('fs');
-
-    fs.readFile('10 letter words.txt', 'utf8', function(err, data) {
-        if (err) throw err;};
-    const lines = data.split('\n');
-    const randomLine = lines[Math.floor(Math.random() * lines.length)];
-
-    let word = randomLine;
-    
+    fetch("10 letter word.txt")
+  .then((res) => res.text())
+  .then((text) => {
+    let lines = text.toString().split('\n');
+    console.log(lines[0]);
+    let word  = lines[Math.floor(Math.random()*lines.length)];
+    console.log(word);
     for (i = 1; i <= 10; i++) {
         let letter = word.charAt(i - 1);
         let newTile = document.getElementById('t' + i.toString());
         newTile.innerHTML = letter;
     }
-       
-
+  })  
 }
+    
 
 function updateScore()
 {
@@ -53,4 +50,4 @@ function updateScore()
     document.getElementById("answer").value = "";
 
 }
-
+  
