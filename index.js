@@ -1,47 +1,17 @@
-// word to validate
-const vWord = 'whiskey';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-const fs = require('fs');
-const readline = require('readline');
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
-function validateWord(fileName, searchWord, callback) {
-  const fileStream = fs.createReadStream(fileName);
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity
-  });
-
-  let score = null;
-
-  rl.on('line', (line) => {
-    const [word, lineScore] = line.split(':');
-    if (word.trim() === searchWord) {
-      score = parseFloat(lineScore);
-      rl.close();
-    }
-  });
-
-  rl.on('close', () => {
-    callback(score);
-  });
-
-  fileStream.on('error', (err) => {
-    console.error(`Error reading the file: ${err}`);
-    callback(null);
-  });
-}
-
-function getScore() {
-  const fileName = 'sample.txt';
-  const searchWord = vWord.toLowerCase();
-
- validateWord(fileName, searchWord, (score) => {
-    if (score !== null) {
-      console.log(`Score: ${score}`);
-    } else {
-      console.log('Invalid entry');
-    }
-  });
-}
-
-getScore();
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
