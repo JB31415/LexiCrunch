@@ -1,3 +1,0 @@
-export const wordList = ['LUMBERJACK', 'HIGHJACKED', 'SCRAWLINGS', 'JOYPOPPING', 'MOZZARELLA', 'SMOKEJACKS', 'JOY'
-
-];
