@@ -1,3 +1,1 @@
-export const wordList = ['LUMBERJACK', 'HIGHJACKED', 'SCRAWLINGS', 'JOYPOPPING', 'MOZZARELLA', 'SMOKEJACKS', 'JOY'
-
-];
+export const wordList = ["word", "ball", "cat", "dog", "sat", "aaa", "eee"];

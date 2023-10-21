@@ -18,7 +18,6 @@ function stringToButton() {
     let lines = text.toString().split('\n');
     console.log(lines[0]);
     let word  = lines[Math.floor(Math.random()*lines.length)];
-    console.log(word);
     for (i = 1; i <= 10; i++) {
         let letter = word.charAt(i - 1);
         let newTile = document.getElementById('t' + i.toString());

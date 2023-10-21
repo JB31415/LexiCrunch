@@ -3,8 +3,8 @@ import './App.css';
 import './tile_style.css';
 
 //REPLACE WITH BIGGER WORD LIST LATER
+import { tenWordList } from './tenWordList';
 import { wordList } from './wordList';
-
 
 //NOT FULLY FUNCTIONING YET!
 const createLetterStack = () => {
@@ -42,8 +42,8 @@ const App = () => {
 
     createLetterStack();
 
-    setRandomWord1(shuffleWord(wordList[Math.floor(Math.random() * wordList.length)]));
-    setRandomWord2(shuffleWord(wordList[Math.floor(Math.random() * wordList.length)]));
+    setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+    setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
     console.log(randomWord1);
     console.log(randomWord2);
@@ -59,15 +59,18 @@ const App = () => {
   //searches for word played from index
   const wordSearch = () => {
 
-    if (wordList.includes(pressedLetters.toUpperCase())) {
+    //let wordList = listOfWords();
+
+    if (wordList.includes(pressedLetters)) {
 
       alert('Match found!');
 
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
 
-      setRandomWord1(randomWord1.substring(pressedLetters.length));
+      setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
-      setRandomWord2(wordList[Math.floor(Math.random() * wordList.length)]);
+      setRandomWord2(randomWord1);
+
 
     } else {
 
@@ -106,10 +109,15 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="letter-row">
+      <div class="scoreboard">
+        <label>Your Score is: </label>
+        <label id="lcScore">0</label>
+        <span id="data"></span>
+      </div>
+        <div id="first-row" className="letter-row">
           {generateLetterTiles(randomWord1, handleLetterClick)}
         </div>
-        <div className="letter-row">
+        <div id="second-row" className="letter-row">
           {generateLetterTiles(randomWord2, handleLetterClick)}
         </div>
         <div className="Submit-key">
