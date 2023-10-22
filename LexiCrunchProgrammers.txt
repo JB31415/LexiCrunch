@@ -1,1 +1,8 @@
-How to use and build this project. 
+How to use and build this project:
+
+
+Navigate to file in command line. 
+
+Type in "npm install" to install project dependencies. 
+
+Type in "npm start" to start project. 
