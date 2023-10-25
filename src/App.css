@@ -34,9 +34,26 @@
   padding-bottom: 0.5rem;
 }
 
+#submit{
+  width: 7rem;
+  height: 3rem;
+  padding: 10px;
+  border-radius: .75rem;
+  border: .25rem solid black;
+  box-sizing: border-box;
+  background-color:greenyellow;
+  font-family:Helvetica, sans-serif;
+  font-size:large;
+  
+}
+
 #first-row{
   opacity: 50%;
   pointer-events: none;
+}
+
+#title{
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 @keyframes App-logo-spin {
