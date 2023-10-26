@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import './tile_style.css';
 
-//REPLACE WITH BIGGER WORD LIST LATER
+//Still used to check for word, replace with dictionary and it should work. 
 import { wordList } from './wordList';
 
+//Bigger list by Stephen, 
+import {tenWordList} from './tenWordList';
+
+import {dictList} from './dictList';
 
 //NOT FULLY FUNCTIONING YET!
 const createLetterStack = () => {
@@ -44,17 +48,20 @@ const App = () => {
 
 
   /*First parameter is object we want to watch, second parameter is the 
-  function used to update the state. useState is just the default state? 
+  function used to update the state. This is defined by react, not us, what we pass becomes the value 
+  useState is just the default state.
   
   Parameter passed to the useState method also determines type of the value???
   useState is a react hook, specificially a state hook, updates and reacts when data or properties change
   */
  
-  //Since function is the same, can't we just have them call the same function?
+  //Since function is the same, can't we just have them call the same function?   
   const [randomWord1, setRandomWord1] = useState('');
   const [randomWord2, setRandomWord2] = useState('');
 
+  //setPressedLetters function is used in handleLetterClick
   const [pressedLetters, setPressedLetters] = useState('');
+
   const [submitList, setSubmitList] = useState([]);
 
 
@@ -71,9 +78,9 @@ const App = () => {
     //Creates rows of letters in html
     createLetterStack();
 
-    //Defines setRandomWord() : Gets random word from wordList.js, shuffles it around, and updates the state. 
-    setRandomWord1(shuffleWord(wordList[Math.floor(Math.random() * wordList.length)]));
-    setRandomWord2(shuffleWord(wordList[Math.floor(Math.random() * wordList.length)]));
+    //Defines setRandomWord() : Gets random word from tenWordList.js, shuffles it around, and updates the state. 
+    setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+    setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
     //No idea, Joseph help me! 
     console.log(randomWord1);
@@ -84,24 +91,31 @@ const App = () => {
   }, []);
 
 
-  //Everything after this is gibberish to me. I'd appreciate some help. 
+  /*This function is passed a value, it then calls setPressedLetters which is a setState function.
+  This is the onClick function used in the html. Joseph, 
+  */
   const handleLetterClick = (letter) => {
+
+    //pressedLetters setState function. What we pass and store in prevLetters is prevLetters + letter
     setPressedLetters((prevLetters) => prevLetters + letter);
   };
   
   //searches for word played from index
   const wordSearch = () => {
 
-    
-    if (wordList.includes(pressedLetters.toUpperCase())) {
+    //Searches the list to find words, not the dictionary. 
+    if (dictList.includes(pressedLetters.toLowerCase())) {
 
       alert('Match found!');
 
+      //Explain the syntax and semantics of this to me Joseph
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
 
+      //Top row is moved to the bottom row
       setRandomWord1(randomWord1.substring(pressedLetters.length));
 
-      setRandomWord2(wordList[Math.floor(Math.random() * wordList.length)]);
+      //Top row gets a new 10 letter word. 
+      setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
     } else {
 
@@ -109,6 +123,8 @@ const App = () => {
 
     }
     
+    //Resets the pressed letters to empty string
+    //I don't understand why this works though, setPressedLetters should 
     setPressedLetters('');
 
   };
