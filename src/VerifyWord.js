@@ -1,4 +1,6 @@
 // word to validate
+
+
 const vWord = 'whiskey';
 
 const fs = require('fs');
@@ -31,15 +33,18 @@ function validateWord(fileName, searchWord, callback) {
   });
 }
 
+//Get score of parameter word if exists
 function getScore() {
-  const fileName = 'sample.txt';
+  const fileName = './src/WordBank.txt';
   const searchWord = vWord.toLowerCase();
 
  validateWord(fileName, searchWord, (score) => {
     if (score !== null) {
       console.log(`Score: ${score}`);
+      //alert("Colleen's Function being called");
     } else {
       console.log('Invalid entry');
+      //alert("Colleen's Function being called");
     }
   });
 }

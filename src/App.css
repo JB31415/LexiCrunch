@@ -16,7 +16,9 @@
 }
 
 .App-header {
+
   background-color: #6bb1fd;
+  background-color: #007bfe;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -29,7 +31,6 @@
 .App-link {
   color: #61dafb;
 }
-
 .letter-row{
   padding-bottom: 0.5rem;
 }

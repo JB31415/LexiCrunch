@@ -45,16 +45,19 @@ const App = () => {
     setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
     setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
+    console.log(randomWord1);
+    console.log(randomWord2);
+
     //ADD MORE WORDS LATER!
 
   }, []);
 
   const handleLetterClick = (letter) => {
-    if (pressedLetters.length < 10){
+    if(submitList.length < 10){
     setPressedLetters((prevLetters) => prevLetters + letter);
     }
     else{
-      alert("You cannot add more than 10 letters");
+      alert("You can only type 10 letters");
     }
   };
   
@@ -109,9 +112,8 @@ const App = () => {
   };
 
   return (
-    <body className="App">
+    <div className="App">
       <header className="App-header">
-      <h1 id="title">LexiCrunch</h1>
       <div class="scoreboard">
         <label>Your Score is: </label>
         <label id="lcScore">0</label>
@@ -124,7 +126,7 @@ const App = () => {
           {generateLetterTiles(randomWord2, handleLetterClick)}
         </div>
         <div className="Submit-key">
-          <button id="submit" onClick={wordSearch}>SUBMIT</button>
+          <button onClick={wordSearch}>SUBMIT</button>
         </div>
         <div className="pressed-letters">{pressedLetters}</div>
         <div className="submit-list">
@@ -136,7 +138,7 @@ const App = () => {
           </ul>
         </div>
       </header>
-    </body>
+    </div>
   );
 };
 

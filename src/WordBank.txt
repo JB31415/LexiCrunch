@@ -5,6 +5,13 @@ delta:5
 echo:4
 foxtrot:7
 golf:4
+LUMBERJACK:10
+HIGHJACKED:5
+SCRAWLINGS:3
+JOYPOPPING:2
+MOZZARELLA:1
+SMOKEJACKS:8
+JOY:6
 hotel:5
 india:5
 juliett:7
