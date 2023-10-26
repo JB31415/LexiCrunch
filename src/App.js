@@ -53,7 +53,7 @@ const App = () => {
   }, []);
 
   const handleLetterClick = (letter) => {
-    if(submitList.length < 10){
+    if(pressedLetters.length < 10){
     setPressedLetters((prevLetters) => prevLetters + letter);
     }
     else{
