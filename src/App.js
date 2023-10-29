@@ -55,6 +55,10 @@ const App = () => {
   const handleLetterClick = (letter) => {
     setPressedLetters((prevLetters) => prevLetters + letter);
   };
+
+  const handleBackslash = () => {
+    setPressedLetters((prevLetters) => prevLetters.substring(0, (prevLetters.length - 1)));
+  };
   
   //searches for word played from index
   const wordSearch = () => {
@@ -120,9 +124,14 @@ const App = () => {
         <div id="second-row" className="letter-row">
           {generateLetterTiles(randomWord2, handleLetterClick)}
         </div>
-        <div className="Submit-key">
+        
+        <div 
+        className="Interface-keys">
+          <button onClick={handleBackslash} style={{ marginRight: '425px' }}>&#x232B;BACK</button>
+
           <button onClick={wordSearch}>SUBMIT</button>
         </div>
+      
         <div className="pressed-letters">{pressedLetters}</div>
         <div className="submit-list">
           <h2>Submitted Words</h2>
