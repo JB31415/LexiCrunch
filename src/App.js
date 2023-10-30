@@ -90,6 +90,7 @@ const App = () => {
 
   };
 
+  // updates the score after each valid word.
   const updateScore = (score) =>
   {
       // replace score function with Collen's
