@@ -31,6 +31,7 @@ const App = () => {
   const [randomWord2, setRandomWord2] = useState('');
   const [pressedLetters, setPressedLetters] = useState('');
   const [submitList, setSubmitList] = useState([]);
+  const [score, setScore] = useState(0);
 
   //RANDOMIZE MORE!
   const shuffleWord = (word) => {
@@ -70,6 +71,8 @@ const App = () => {
 
       alert('Match found!');
 
+      updateScore(score);
+
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
 
       setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
@@ -86,6 +89,14 @@ const App = () => {
     setPressedLetters('');
 
   };
+
+  const updateScore = (score) =>
+  {
+      // replace score function with Collen's
+          score += 1; 
+          setScore(score);
+  
+  }
 
   const generateLetterTiles = (word, onClick) => {
 
@@ -116,7 +127,7 @@ const App = () => {
       <header className="App-header">
       <div class="scoreboard">
         <label>Your Score is: </label>
-        <label id="lcScore">0</label>
+        <label id="lcScore">{score}</label>
         <span id="data"></span>
       </div>
         <div id="first-row" className="letter-row">
