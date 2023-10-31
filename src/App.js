@@ -79,14 +79,6 @@ const App = () => {
   */
   const handleLetterClick = (letter) => {
 
-    setPressedLetters((prevLetters) => prevLetters + letter);
-
-  };
-
-  const handleBackspace = () => {
-    setPressedLetters((prevLetters) => prevLetters.substring(0, (prevLetters.length - 1)));
-  };
-
     //if pressedletters < 10, add the letter clicked
     if (pressedLetters.length < 10){
       setPressedLetters((prevLetters) => prevLetters + letter);
@@ -95,6 +87,10 @@ const App = () => {
         alert("You cannot add more than 10 letters");
       }
     }
+  
+    const handleBackspace = () => {
+      setPressedLetters((prevLetters) => prevLetters.substring(0, (prevLetters.length - 1)));
+    };
   
   //searches for word played from index
   const wordSearch = () => {
@@ -173,13 +169,11 @@ const App = () => {
           {generateLetterTiles(randomWord2, handleLetterClick)}
         </div>
         
-        <div 
-        className="Interface-keys">
+        <div className="Interface-keys">
           <button onClick={handleBackspace} style={{ marginRight: '425px' }}>&#x232B;BACK</button>
-
           <button onClick={wordSearch}>SUBMIT</button>
         </div>
-      
+
         <div className="pressed-letters">{pressedLetters}</div>
         <div className="submit-list">
           <h2>Submitted Words</h2>
@@ -192,4 +186,6 @@ const App = () => {
       </header>
     </div>
   );
+
+};
 export default App;
