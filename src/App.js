@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import './tile_style.css';
 
+//This allows us to render html elements in functions using render();
+import reactDOM from 'react-dom';
+
 //Still used to check for word, replace with dictionary and it should work. 
 import { wordList } from './wordList';
 
@@ -130,33 +133,61 @@ const App = () => {
   
   }
 
-  const generateLetterTiles = (word, onClick) => {
+  
+  
+  //Get root element
+  const container = document.getElementById("root");
 
-    const letters = word.split('');
+  //Use reactDOM to create a root, this allows us to render elements at the root. 
+  const root = reactDOM.createRoot(container);
 
-    return (
 
-      <div className="button-row">
 
-        {letters.map((letter, index) => (
+  //tearDown function hides the lexiCrunch elements and will eventually return new html elements using .render()
+  const tearDown = () => {
+    
+    //Application is an HTMLcollection of elements with the className "gameElements", so just the div.    
+    const application = document.getElementsByClassName("gameElements");
 
-          <button key={index} className="letter-button" onClick={() => onClick(letter)}>
+    //Just like an array, you have to use item(subscript) to access the elements. Then change set attribute of hidden to true;
+    application.item(0).setAttribute("hidden", "true");
+    
+    /*I'd like to pitch an idea: 
 
-            {letter}
+        What if we have the HTML inside of the "Game" portion just be outputted through render()? That way, we can just render the end screen
+        and have it automatically replace all the elements. This would also be better than just hiding the elements. Plus, we can restart the game
+        by simply rendering it again which I don't think we can do currently. 
 
-          </button>
+        The HTML in the return function will be what will always be on screen, titles, colors, etc etc. The html in render() will be the game.  
 
-        ))}
+    */
 
-      </div>
 
-    );
+    //Get root element
+    //const container = document.getElementById("root");
 
-        };
+    //Use reactDOM to create a root, this allows us to render elements at the root. 
+    //const root = reactDOM.createRoot(container);
 
-  return (
+
+    //When a second render is called, the first render is removed. This should be good for updating
+    root.render(<h1>Testing </h1>);
+
+
+    //Replace the html below with the end screen. 
+    root.render(<h2>second</h2>);    
+
+    
+
+
+  }
+
+  const startGame = () => {
+
+    return(
     <div className="App">
       <header className="App-header">
+      <div class="gameElements">
       <div class="scoreboard">
         <label>Your Score is: </label>
         <label id="lcScore">{score}</label>
@@ -182,8 +213,81 @@ const App = () => {
               <li key={index}>{word}</li>
             ))}
           </ul>
+              
+        </div>
         </div>
       </header>
+    </div>)
+
+
+      //root.render(gameElem);
+
+  }
+
+  const generateLetterTiles = (word, onClick) => {
+
+    const letters = word.split('');
+
+    return (
+
+      <div className="button-row">
+
+        {letters.map((letter, index) => (
+
+          <button key={index} className="letter-button" onClick={() => onClick(letter)}>
+
+            {letter}
+
+          </button>
+
+        ))}
+
+      </div>
+
+    );
+
+        };
+
+  return (
+    <div className = "root">
+    <div className="App">
+      <header className="App-header">
+        {/*sus
+      <div class="gameElements">
+      <div class="scoreboard">
+        <label>Your Score is: </label>
+        <label id="lcScore">{score}</label>
+        <span id="data"></span>
+      </div>
+        <div id="first-row" className="letter-row">
+          {generateLetterTiles(randomWord1, handleLetterClick)}
+        </div>
+        <div id="second-row" className="letter-row">
+          {generateLetterTiles(randomWord2, handleLetterClick)}
+        </div>
+        
+        <div className="Interface-keys">
+          <button onClick={handleBackspace} style={{ marginRight: '425px' }}>&#x232B;BACK</button>
+          <button onClick={wordSearch}>SUBMIT</button>
+        </div>
+
+        <div className="pressed-letters">{pressedLetters}</div>
+        <div className="submit-list">
+          <h2>Submitted Words</h2>
+          <ul>
+            {submitList.map((word, index) => (
+              <li key={index}>{word}</li>
+            ))}
+          </ul>
+              
+        </div>
+        </div>
+            */}
+        <button onClick = {startGame}>StartGame</button>
+        <button onClick = {tearDown}>TearDown Button</button>
+      </header>
+      
+    </div>
     </div>
   );
 
