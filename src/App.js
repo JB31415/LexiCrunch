@@ -6,7 +6,7 @@ import './tile_style.css';
 import reactDOM from 'react-dom';
 
 //Still used to check for word, replace with dictionary and it should work. 
-import { wordList } from './wordList';
+//import { wordList } from './wordList';
 
 //Bigger list by Stephen, 
 import {tenWordList} from './tenWordList';
@@ -34,10 +34,102 @@ const createLetterStack = () => {
   
 };
 
-const App = () => {
+//Get root element
+const container = document.getElementById("playArea");
+
+//Use reactDOM to create a root, this allows us to render elements at the root. 
+const root = reactDOM.createRoot(container);
 
 
-  /*First parameter is object we want to watch, second parameter is the 
+
+//tearDown function hides the lexiCrunch elements and will eventually return new html elements using .render()
+const tearDown = () => {
+  
+  //Get root element
+  const container = document.getElementById("playArea");
+
+  //Use reactDOM to create a root, this allows us to render elements at the root. 
+  const root = reactDOM.createRoot(container);
+
+
+  //Application is an HTMLcollection of elements with the className "gameElements", so just the div.    
+  const application = document.getElementsByClassName("gameElements");
+
+  //Just like an array, you have to use item(subscript) to access the elements. Then change set attribute of hidden to true;
+  application.item(0).setAttribute("hidden", "true");
+  
+  /*I'd like to pitch an idea: 
+
+      What if we have the HTML inside of the "Game" portion just be outputted through render()? That way, we can just render the end screen
+      and have it automatically replace all the elements. This would also be better than just hiding the elements. Plus, we can restart the game
+      by simply rendering it again which I don't think we can do currently. 
+
+      The HTML in the return function will be what will always be on screen, titles, colors, etc etc. The html in render() will be the game.  
+
+  */
+
+
+  //Get root element
+  //const container = document.getElementById("root");
+
+  //Use reactDOM to create a root, this allows us to render elements at the root. 
+  //const root = reactDOM.createRoot(container);
+
+
+  //When a second render is called, the first render is removed. This should be good for updating
+  root.render(<h1>Testing </h1>);
+
+
+  //Replace the html below with the end screen. 
+  root.render(<h2>second</h2>);    
+
+  
+
+
+}
+
+//Start game finds the div with id = playArea, and renders the GameLexicrunch component into it. 
+const startGame = () => {
+
+  /*  IMPORTANT INFORMATION ON RENDERING
+
+  <GameLexiCrunch> is a react component containing all the logic of the game, that way we can create and destroy with 
+  the render() method. 
+  
+  When we render something, we replace all internal elements with the new component. This means rendering a <StartScreen> 
+  component using the same root will replace <GameLexiCrunch> 
+  
+ 
+
+  My advice would be to make a StartScreen component and an EndScreen component, possibly in different files, 
+  and then render them as needed. 
+
+   NOTE: all components must start with a capital letter. Also, the .getElementById() is referencing ./public/index.html
+   I don't believe it can reference React components. 
+
+  */
+
+
+
+
+  //Get root element
+  const container = document.getElementById("playArea");
+
+  //Use reactDOM to create a root, this allows us to render elements at the container. 
+  const root = reactDOM.createRoot(container);
+
+
+  
+  //Render component in element specified by container
+  root.render(<GameLexiCrunch></GameLexiCrunch>);
+
+
+}
+
+//GameLexiCrunch is the component of the game itself. It should be able to be placed anywhere and have a fully functioning LexiCrunch
+const GameLexiCrunch = () => {
+
+    /*First parameter is object we want to watch, second parameter is the 
   function used to update the state. This is defined by react, not us, what we pass becomes the value 
   useState is just the default state.
   
@@ -69,8 +161,8 @@ const App = () => {
     setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
     setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
-    console.log(randomWord1);
-    console.log(randomWord2);
+    //console.log(randomWord1);
+    //console.log(randomWord2);
 
     //ADD MORE WORDS LATER!
 
@@ -131,98 +223,11 @@ const App = () => {
           score += 1; 
           setScore(score);
   
-  }
+  };
 
   
   
-  //Get root element
-  const container = document.getElementById("root");
-
-  //Use reactDOM to create a root, this allows us to render elements at the root. 
-  const root = reactDOM.createRoot(container);
-
-
-
-  //tearDown function hides the lexiCrunch elements and will eventually return new html elements using .render()
-  const tearDown = () => {
-    
-    //Application is an HTMLcollection of elements with the className "gameElements", so just the div.    
-    const application = document.getElementsByClassName("gameElements");
-
-    //Just like an array, you have to use item(subscript) to access the elements. Then change set attribute of hidden to true;
-    application.item(0).setAttribute("hidden", "true");
-    
-    /*I'd like to pitch an idea: 
-
-        What if we have the HTML inside of the "Game" portion just be outputted through render()? That way, we can just render the end screen
-        and have it automatically replace all the elements. This would also be better than just hiding the elements. Plus, we can restart the game
-        by simply rendering it again which I don't think we can do currently. 
-
-        The HTML in the return function will be what will always be on screen, titles, colors, etc etc. The html in render() will be the game.  
-
-    */
-
-
-    //Get root element
-    //const container = document.getElementById("root");
-
-    //Use reactDOM to create a root, this allows us to render elements at the root. 
-    //const root = reactDOM.createRoot(container);
-
-
-    //When a second render is called, the first render is removed. This should be good for updating
-    root.render(<h1>Testing </h1>);
-
-
-    //Replace the html below with the end screen. 
-    root.render(<h2>second</h2>);    
-
-    
-
-
-  }
-
-  const startGame = () => {
-
-    return(
-    <div className="App">
-      <header className="App-header">
-      <div class="gameElements">
-      <div class="scoreboard">
-        <label>Your Score is: </label>
-        <label id="lcScore">{score}</label>
-        <span id="data"></span>
-      </div>
-        <div id="first-row" className="letter-row">
-          {generateLetterTiles(randomWord1, handleLetterClick)}
-        </div>
-        <div id="second-row" className="letter-row">
-          {generateLetterTiles(randomWord2, handleLetterClick)}
-        </div>
-        
-        <div className="Interface-keys">
-          <button onClick={handleBackspace} style={{ marginRight: '425px' }}>&#x232B;BACK</button>
-          <button onClick={wordSearch}>SUBMIT</button>
-        </div>
-
-        <div className="pressed-letters">{pressedLetters}</div>
-        <div className="submit-list">
-          <h2>Submitted Words</h2>
-          <ul>
-            {submitList.map((word, index) => (
-              <li key={index}>{word}</li>
-            ))}
-          </ul>
-              
-        </div>
-        </div>
-      </header>
-    </div>)
-
-
-      //root.render(gameElem);
-
-  }
+  
 
   const generateLetterTiles = (word, onClick) => {
 
@@ -248,11 +253,10 @@ const App = () => {
 
         };
 
-  return (
-    <div className = "root">
-    <div className="App">
-      <header className="App-header">
-        {/*sus
+  //Return GameLexiCrunch, basically returns all the html to make LexiCrunch. 
+  return(
+    <div className = "App">
+    <header className="App-header">
       <div class="gameElements">
       <div class="scoreboard">
         <label>Your Score is: </label>
@@ -279,15 +283,23 @@ const App = () => {
               <li key={index}>{word}</li>
             ))}
           </ul>
-              
         </div>
         </div>
-            */}
-        <button onClick = {startGame}>StartGame</button>
-        <button onClick = {tearDown}>TearDown Button</button>
-      </header>
+        </header>
+        </div>
+        
       
-    </div>
+  )
+
+}
+
+//App is the main application without the LexiCrunch play area. It'll be a base for other components. The CSS is not working correctly but that should be an easy fix. 
+const App = () => {
+  return (
+    <div className="App">
+          <div id = "testArea"></div>
+          <button onClick = {startGame}>StartGame</button>
+          <button onClick = {tearDown}>TearDown Button</button>
     </div>
   );
 
