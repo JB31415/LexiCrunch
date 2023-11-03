@@ -161,9 +161,6 @@ const GameLexiCrunch = () => {
     setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
     setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
-    //console.log(randomWord1);
-    //console.log(randomWord2);
-
     //ADD MORE WORDS LATER!
 
   }, []);
@@ -183,6 +180,7 @@ const GameLexiCrunch = () => {
       }
     }
   
+    //deletes the previous letter.
     const handleBackspace = () => {
       setPressedLetters((prevLetters) => prevLetters.substring(0, (prevLetters.length - 1)));
     };
@@ -203,7 +201,7 @@ const GameLexiCrunch = () => {
       //Top row gets a new 10 letter word. 
       setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
 
-       //Top row is moved to the bottom row
+       //Top row is moved to the bottom row.
       setRandomWord2(randomWord1);
 
     } 
@@ -276,6 +274,7 @@ const GameLexiCrunch = () => {
         </div>
 
         <div className="pressed-letters">{pressedLetters}</div>
+        <br></br>
         <div className="submit-list">
           <h2>Submitted Words</h2>
           <ul>
