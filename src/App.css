@@ -1,3 +1,14 @@
+
+/*Makes the entire page blue, otherwise the background starts 
+to disappear when more than five words are added to the list*/
+*{
+  background-color: #6bb1fd;
+  background-color: #007bfe;
+}
+
+button{
+  background-color: white; /*prevents the universal function from changing them blue*/
+}
 .App {
   text-align: center;
 }
@@ -6,6 +17,8 @@
   height: 40vmin;
   pointer-events: none;
 }
+
+
 
 @media (prefers-reduced-motion: no-preference) {
 
@@ -16,10 +29,7 @@
 }
 
 .App-header {
-
-  background-color: #6bb1fd;
-  background-color: #007bfe;
-  min-height: 100vh;
+  min-height: 75vh; /*Reduced so that there wasn't much white space at the top.*/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,8 +41,21 @@
 .App-link {
   color: #61dafb;
 }
+
 .letter-row{
   padding-bottom: 0.5rem;
+}
+
+.pressed-letters{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /*Helps align elements in the absolute position to the center*/
+}
+
+.submit-list{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 #submit{
