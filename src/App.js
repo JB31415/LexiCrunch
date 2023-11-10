@@ -145,6 +145,7 @@ const GameLexiCrunch = () => {
   const [pressedLetters, setPressedLetters] = useState('');
 
   const [submitList, setSubmitList] = useState([]);
+
   const [score, setScore] = useState(0);
 
   //RANDOMIZE MORE!
@@ -186,14 +187,14 @@ const GameLexiCrunch = () => {
     };
   
   //searches for word played from index
-  const wordSearch = () => {
+  const wordSearch = async () => {
 
     //Searches the dictionary to find words. 
     if (dictList.includes(pressedLetters.toLowerCase())) {
 
       alert('Match found!');
 
-      updateScore(score);
+      await fetchDatamuse(pressedLetters); // Call fetchDatamuse for obscurity score
 
       //Updates the submitted list with the new word
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
@@ -214,12 +215,61 @@ const GameLexiCrunch = () => {
 
   };
 
+//
+const fetchDatamuse = async (word) => {
+  try {
+    //NEED TO COLLECT definitions, examples, synonyms, antonyms, parts of speech, and pronunciation
+    //const response = await fetch(`https://api.datamuse.com/words?sp=${word}&md=dprf`);
+    const response = await fetch(`https://api.datamuse.com/words?sp=${word}&md=f`);
+    const data = await response.json();
+
+    let fscore = JSON.stringify(data)
+
+    let fstart = fscore.indexOf('f:')
+
+    //alert(JSON.stringify(data));
+    //alert(fstart);
+
+    //lets say you want to find the word frequency for "word"
+    //https://api.datamuse.com/words?sp=word&md=f returns
+    //[{"word":"word","score":5385,"tags":["f:147.674682"]}]
+
+    let fscorestring = '';
+
+    for (let i = fstart + 2; i < fscore.length; i++) {
+      if (fscore[i] === '"') {
+        break; // Break the loop when a closing quote is encountered
+      }
+
+      //lexiscore is '147.674682'
+      fscorestring += fscore[i];
+      //alert(`Lexiscore: ${lexiscore}`);
+    }
+    
+    //lexiscore is now a float 1/147.674682 (because word is a very common word!)
+    let lexiscore = 1 / parseFloat(fscorestring);
+
+    alert(`Lexiscore: ${lexiscore}`);
+
+    updateScore(lexiscore);
+
+    lexiscore = '';
+
+  } catch (error) {
+
+    console.error('Error fetching data from Datamuse API', error);
+
+  }
+  
+};
+
   // updates the score after each valid word.
-  const updateScore = (score) =>
+  const updateScore = (newScore) =>
   {
       // replace score function with Collen's
-          score += 1; 
-          setScore(score);
+          //score += newScore; 
+          //score += newScore;
+          setScore(prevScore => prevScore + newScore);
   
   };
 
