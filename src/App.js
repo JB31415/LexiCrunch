@@ -170,11 +170,19 @@ const GameLexiCrunch = () => {
   /*This function is passed a value, it then calls setPressedLetters which is a setState function.
   This is the onClick function used in the html. Joseph, 
   */
-  const handleLetterClick = (letter) => {
+  const handleLetterClick = (letter, word, index) => {
+
+    //Parameters are passed correctly
+    console.log(letter + ' ' + index);
 
     //if pressedletters < 10, add the letter clicked
     if (pressedLetters.length < 10){
       setPressedLetters((prevLetters) => prevLetters + letter);
+
+      //setRandomWord1((rowLetters) => rowLetters.substring[0, index] + rowLetters.substring[index + 1]);
+
+      setRandomWord2(word.substring(0, index) + word.substring(index + 1) );
+
       }
       else{
         alert("You cannot add more than 10 letters");
@@ -183,7 +191,16 @@ const GameLexiCrunch = () => {
   
     //deletes the previous letter.
     const handleBackspace = () => {
-      setPressedLetters((prevLetters) => prevLetters.substring(0, (prevLetters.length - 1)));
+
+      setPressedLetters((prevLetters) => (
+        prevLetters.substring(0, (prevLetters.length - 1))
+
+        //I'm not sure if a void function will destroy this but why not
+        //setRandomWord2((previousRow) => (previousRow + prevLetters.substring(prevLetters.length - 2)));
+      )
+        );
+
+
     };
   
   //searches for word played from index
@@ -266,6 +283,9 @@ const fetchDatamuse = async (word) => {
   // updates the score after each valid word.
   const updateScore = (newScore) =>
   {
+
+      //Why are updateScore and setScore two different functions? 
+
       // replace score function with Collen's
           //score += newScore; 
           //score += newScore;
@@ -277,8 +297,10 @@ const fetchDatamuse = async (word) => {
   
   
 
-  const generateLetterTiles = (word, onClick) => {
+  //parameters are a word representing the row and the onClickFunction that gets called by onClick
+  const generateLetterTiles = (word, onClickFunction) => {
 
+    console.log(word);
     const letters = word.split('');
 
     return (
@@ -287,11 +309,22 @@ const fetchDatamuse = async (word) => {
 
         {letters.map((letter, index) => (
 
-          <button key={index} className="letter-button" onClick={() => onClick(letter)}>
+
+          /*
+          <button id = {"buttonNum" + index}  key={index} className="letter-button" onClick={() => onClick(letter, index)}>
 
             {letter}
 
           </button>
+*/        
+
+          <button  className="letter-button" onClick={() => onClickFunction(letter, word, index)}>
+
+            {letter}
+
+          </button>
+
+
 
         ))}
 
@@ -323,7 +356,7 @@ const fetchDatamuse = async (word) => {
           <button onClick={wordSearch}>SUBMIT</button>
         </div>
 
-        <div className="pressed-letters">{pressedLetters}</div>
+        <div className="pressed-letters">{generateLetterTiles(pressedLetters, null)}</div>
         <br></br>
         <div className="submit-list">
           <h2>Submitted Words</h2>
