@@ -247,7 +247,7 @@ const fetchDatamuse = async (word) => {
     }
     
     //lexiscore is now a float 1/147.674682 (because word is a very common word!)
-    let lexiscore = 1 / parseFloat(fscorestring);
+    let lexiscore = Math.ceil(1 / parseFloat(fscorestring) * 1000);
 
     alert(`Lexiscore: ${lexiscore}`);
 
