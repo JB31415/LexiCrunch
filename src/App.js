@@ -8,6 +8,9 @@ import reactDOM from 'react-dom';
 //Still used to check for word, replace with dictionary and it should work. 
 //import { wordList } from './wordList';
 
+//VERY HANDY MECHANIC FOR ANIMATION, BUT NOT USED YET!
+//import { motion } from "framer-motion";
+
 //Bigger list by Stephen, 
 import {tenWordList} from './tenWordList';
 
@@ -215,39 +218,96 @@ const GameLexiCrunch = () => {
 
   };
 
+//sees how many times relatedwords/spelledalike/soundalikes appear in string
+function wordsinstring(string) {
+
+  const regex = /\bword\b/g;
+
+  const matches = string.match(regex);
+
+  //will be set to 1 if no matches are found. NOTE THAT ZERO WILL CAUSE INFINITY ERROR
+  const count = matches ? matches.length : 1;
+
+  if (count > 1000) {
+
+    count = 1000;
+
+  }
+
+  alert(count);
+
+  return count;
+  
+}
+
 //
 const fetchDatamuse = async (word) => {
   try {
+
     //NEED TO COLLECT definitions, examples, synonyms, antonyms, parts of speech, and pronunciation
     //const response = await fetch(`https://api.datamuse.com/words?sp=${word}&md=dprf`);
-    const response = await fetch(`https://api.datamuse.com/words?sp=${word}&md=f`);
-    const data = await response.json();
+    
+    //const response = await fetch(`https://api.datamuse.com/words?sp=${word}&md=f`);
 
-    let fscore = JSON.stringify(data)
+    //words related to ${word}
+    let relatedresponse = await fetch(`https://api.datamuse.com/words?rel_trg=${word}`);
 
-    let fstart = fscore.indexOf('f:')
+    //let fstart = defstring.indexOf('f:')
+
+    let relateddata = await relatedresponse.json();
+
+    //alert(relateddata);
+
+    let relatedstring = JSON.stringify(relateddata);
+
+    let numRelatedWords = wordsinstring(relatedstring);
+
+    //words spelled similar to ${word}
+    let spelledresponse = await fetch(`https://api.datamuse.com/words?sp=${word}`);
+
+    let spelleddata = await spelledresponse.json();
+
+    //alert(spelleddata);
+
+    let spelledstring = JSON.stringify(spelleddata);
+
+    let numSpelledSimilar = wordsinstring(spelledstring);
+
+    //words sounding similar to ${word}
+    let soundresponse = await fetch(`https://api.datamuse.com/words?sl=${word}`);
+
+    let sounddata = await soundresponse.json();
+
+    let soundstring = JSON.stringify(sounddata);
+
+    let numSoundalikes = wordsinstring(soundstring);
+
+    //calculates ((1/numberofrelatedwords) + (1/spelledsimilarwords) (1/ssoundsimilarwords))*1000
+    let lexiscore = Math.ceil(((1 / parseFloat(numSpelledSimilar)) + (1 / parseFloat(numRelatedWords)) + (1 / parseFloat(numSoundalikes))) * 1000); 
 
     //alert(JSON.stringify(data));
-    //alert(fstart);
+    //alert(count);
 
     //lets say you want to find the word frequency for "word"
     //https://api.datamuse.com/words?sp=word&md=f returns
     //[{"word":"word","score":5385,"tags":["f:147.674682"]}]
 
-    let fscorestring = '';
+    //let fscorestring = '';
 
-    for (let i = fstart + 2; i < fscore.length; i++) {
-      if (fscore[i] === '"') {
-        break; // Break the loop when a closing quote is encountered
-      }
+    //for (let i = fstart + 2; i < fscore.length; i++) {
+      //if (fscore[i] === '"') {
+        //break; // Break the loop when a closing quote is encountered
+      //}
 
       //lexiscore is '147.674682'
-      fscorestring += fscore[i];
+      //fscorestring += fscore[i];
       //alert(`Lexiscore: ${lexiscore}`);
-    }
+    //}
     
     //lexiscore is now a float 1/147.674682 (because word is a very common word!)
-    let lexiscore = Math.ceil(1 / parseFloat(fscorestring) * 1000);
+    //let lexiscore = Math.ceil(1 / parseFloat(fscorestring) * 1000);
+
+    //let lexiscore = 0;
 
     alert(`Lexiscore: ${lexiscore}`);
 
@@ -271,11 +331,7 @@ const fetchDatamuse = async (word) => {
           //score += newScore;
           setScore(prevScore => prevScore + newScore);
   
-  };
-
-  
-  
-  
+  };  
 
   const generateLetterTiles = (word, onClick) => {
 
