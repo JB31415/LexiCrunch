@@ -137,15 +137,17 @@ const GameLexiCrunch = () => {
   useState is a react hook, specificially a state hook, updates and reacts when data or properties change
   */
  
-  //Since function is the same, can't we just have them call the same function?   
+  //RandomWord1 and 2 are the two rows of letters which you click build words
   const [randomWord1, setRandomWord1] = useState('');
   const [randomWord2, setRandomWord2] = useState('');
 
-  //setPressedLetters function is used in handleLetterClick
+  //pressedLetters are the buttons which appear when clicking the randomWord row.
   const [pressedLetters, setPressedLetters] = useState('');
 
+  //submitList is the list of submitted words at the bottom of the page
   const [submitList, setSubmitList] = useState([]);
 
+  //score usestate, self-explanatory. 
   const [score, setScore] = useState(0);
 
   //RANDOMIZE MORE!
@@ -189,29 +191,29 @@ const GameLexiCrunch = () => {
       }
     }
   
-    //deletes the previous letter.
-    const handleBackspace = () => {
-
-      setPressedLetters((prevLetters) => (
-        prevLetters.substring(0, (prevLetters.length - 1))
-
-        //I'm not sure if a void function will destroy this but why not
-        //setRandomWord2((previousRow) => (previousRow + prevLetters.substring(prevLetters.length - 2)));
-      )
-        );
+    //This is the onClick function for the submit list. It will remove the button and return it to the 
+    //row above when clicked. Word is the entire submit list and index is the index of the clicked button 
+    const handleDeleteClick = (letter, word, index) => {
+      
+      //When buttonClicked, return the button to the row above.
+      setRandomWord2((prevLetters) => prevLetters + letter);
+      //Remove the button from the pressedLetters. 
+      setPressedLetters(word.substring(0, index) + word.substring(index + 1));
 
 
-    };
+    }
+
   
   //searches for word played from index
   const wordSearch = async () => {
 
-    //Searches the dictionary to find words. 
+    //If submitted word is in the dictionary...
     if (dictList.includes(pressedLetters.toLowerCase())) {
 
       alert('Match found!');
 
-      await fetchDatamuse(pressedLetters); // Call fetchDatamuse for obscurity score
+      // Call fetchDatamuse for obscurity score
+      await fetchDatamuse(pressedLetters); 
 
       //Updates the submitted list with the new word
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
@@ -223,11 +225,21 @@ const GameLexiCrunch = () => {
       setRandomWord2(randomWord1);
 
     } 
+
+    //If word not found
     else {
+
+      //return letters to top row
+      setRandomWord2((prevLetters) => (prevLetters + pressedLetters.toLowerCase()));
 
       alert('No match found.');
 
+
+
+
     }
+
+    //Clear the pressedLetters. 
     setPressedLetters('');
 
   };
@@ -352,11 +364,10 @@ const fetchDatamuse = async (word) => {
         </div>
         
         <div className="Interface-keys">
-          <button onClick={handleBackspace} style={{ marginRight: '425px' }}>&#x232B;BACK</button>
           <button onClick={wordSearch}>SUBMIT</button>
         </div>
 
-        <div className="pressed-letters">{generateLetterTiles(pressedLetters, null)}</div>
+        <div className="pressed-letters">{generateLetterTiles(pressedLetters, handleDeleteClick)}</div>
         <br></br>
         <div className="submit-list">
           <h2>Submitted Words</h2>
