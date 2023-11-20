@@ -140,15 +140,17 @@ const GameLexiCrunch = () => {
   useState is a react hook, specificially a state hook, updates and reacts when data or properties change
   */
  
-  //Since function is the same, can't we just have them call the same function?   
+  //RandomWord1 and 2 are the two rows of letters which you click build words
   const [randomWord1, setRandomWord1] = useState('');
   const [randomWord2, setRandomWord2] = useState('');
 
-  //setPressedLetters function is used in handleLetterClick
+  //pressedLetters are the buttons which appear when clicking the randomWord row.
   const [pressedLetters, setPressedLetters] = useState('');
 
+  //submitList is the list of submitted words at the bottom of the page
   const [submitList, setSubmitList] = useState([]);
 
+  //score usestate, self-explanatory. 
   const [score, setScore] = useState(0);
 
   //RANDOMIZE MORE!
@@ -173,31 +175,48 @@ const GameLexiCrunch = () => {
   /*This function is passed a value, it then calls setPressedLetters which is a setState function.
   This is the onClick function used in the html. Joseph, 
   */
-  const handleLetterClick = (letter) => {
+  const handleLetterClick = (letter, word, index) => {
+
+    //Parameters are passed correctly
+    console.log(letter + ' ' + index);
 
     //if pressedletters < 10, add the letter clicked
     if (pressedLetters.length < 10){
       setPressedLetters((prevLetters) => prevLetters + letter);
+
+      //setRandomWord1((rowLetters) => rowLetters.substring[0, index] + rowLetters.substring[index + 1]);
+
+      setRandomWord2(word.substring(0, index) + word.substring(index + 1) );
+
       }
       else{
         alert("You cannot add more than 10 letters");
       }
     }
   
-    //deletes the previous letter.
-    const handleBackspace = () => {
-      setPressedLetters((prevLetters) => prevLetters.substring(0, (prevLetters.length - 1)));
-    };
+    //This is the onClick function for the submit list. It will remove the button and return it to the 
+    //row above when clicked. Word is the entire submit list and index is the index of the clicked button 
+    const handleDeleteClick = (letter, word, index) => {
+      
+      //When buttonClicked, return the button to the row above.
+      setRandomWord2((prevLetters) => prevLetters + letter);
+      //Remove the button from the pressedLetters. 
+      setPressedLetters(word.substring(0, index) + word.substring(index + 1));
+
+
+    }
+
   
   //searches for word played from index
   const wordSearch = async () => {
 
-    //Searches the dictionary to find words. 
+    //If submitted word is in the dictionary...
     if (dictList.includes(pressedLetters.toLowerCase())) {
 
       alert('Match found!');
 
-      await fetchDatamuse(pressedLetters); // Call fetchDatamuse for obscurity score
+      // Call fetchDatamuse for obscurity score
+      await fetchDatamuse(pressedLetters); 
 
       //Updates the submitted list with the new word
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
@@ -209,11 +228,21 @@ const GameLexiCrunch = () => {
       setRandomWord2(randomWord1);
 
     } 
+
+    //If word not found
     else {
+
+      //return letters to top row
+      setRandomWord2((prevLetters) => (prevLetters + pressedLetters.toLowerCase()));
 
       alert('No match found.');
 
+
+
+
     }
+
+    //Clear the pressedLetters. 
     setPressedLetters('');
 
   };
@@ -326,6 +355,9 @@ const fetchDatamuse = async (word) => {
   // updates the score after each valid word.
   const updateScore = (newScore) =>
   {
+
+      //Why are updateScore and setScore two different functions? 
+
       // replace score function with Collen's
           //score += newScore; 
           //score += newScore;
@@ -333,8 +365,10 @@ const fetchDatamuse = async (word) => {
   
   };  
 
-  const generateLetterTiles = (word, onClick) => {
+  //parameters are a word representing the row and the onClickFunction that gets called by onClick
+  const generateLetterTiles = (word, onClickFunction) => {
 
+    console.log(word);
     const letters = word.split('');
 
     return (
@@ -343,11 +377,22 @@ const fetchDatamuse = async (word) => {
 
         {letters.map((letter, index) => (
 
-          <button key={index} className="letter-button" onClick={() => onClick(letter)}>
+
+          /*
+          <button id = {"buttonNum" + index}  key={index} className="letter-button" onClick={() => onClick(letter, index)}>
 
             {letter}
 
           </button>
+*/        
+
+          <button  className="letter-button" onClick={() => onClickFunction(letter, word, index)}>
+
+            {letter}
+
+          </button>
+
+
 
         ))}
 
@@ -375,11 +420,10 @@ const fetchDatamuse = async (word) => {
         </div>
         
         <div className="Interface-keys">
-          <button onClick={handleBackspace} style={{ marginRight: '425px' }}>&#x232B;BACK</button>
           <button onClick={wordSearch}>SUBMIT</button>
         </div>
 
-        <div className="pressed-letters">{pressedLetters}</div>
+        <div className="pressed-letters">{generateLetterTiles(pressedLetters, handleDeleteClick)}</div>
         <br></br>
         <div className="submit-list">
           <h2>Submitted Words</h2>
