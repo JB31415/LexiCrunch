@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import './tile_style.css';
+import soundEffect from "./pop-sound.wav";
+// Be sure to install use-sound by typing "npm install use-sound" in the command prompt
+import useSound from 'use-sound';
 
 //This allows us to render html elements in functions using render();
 import reactDOM from 'react-dom';
@@ -153,6 +156,11 @@ const GameLexiCrunch = () => {
   //score usestate, self-explanatory. 
   const [score, setScore] = useState(0);
 
+  //plays sound effect
+  const[playSound] = useSound(soundEffect, {
+    interupter: true
+  })
+
   //RANDOMIZE MORE!
   const shuffleWord = (word) => {
     const shuffledWord = word.split('').sort(() => Math.random() - .5).join('');
@@ -187,6 +195,7 @@ const GameLexiCrunch = () => {
       //setRandomWord1((rowLetters) => rowLetters.substring[0, index] + rowLetters.substring[index + 1]);
 
       setRandomWord2(word.substring(0, index) + word.substring(index + 1) );
+      playSound();
 
       }
       else{
@@ -202,7 +211,7 @@ const GameLexiCrunch = () => {
       setRandomWord2((prevLetters) => prevLetters + letter);
       //Remove the button from the pressedLetters. 
       setPressedLetters(word.substring(0, index) + word.substring(index + 1));
-
+      playSound();
 
     }
 
@@ -263,7 +272,7 @@ function wordsinstring(string) {
 
   }
 
-  alert(count);
+
 
   return count;
   

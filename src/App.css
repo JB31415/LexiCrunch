@@ -49,12 +49,14 @@ button{
 .pressed-letters{
   position: absolute;
   left: 50%;
+  padding: 1rem;
   transform: translateX(-50%); /*Helps align elements in the absolute position to the center*/
 }
 
 .submit-list{
   position: absolute;
   left: 50%;
+  top: 60%;
   transform: translateX(-50%);
 }
 
