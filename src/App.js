@@ -4,7 +4,8 @@ import './tile_style.css';
 import soundEffect from "./pop-sound.wav";
 // Be sure to install use-sound by typing "npm install use-sound" in the command prompt
 import useSound from 'use-sound';
-
+//background music
+import music from './Chinese.wav';
 //This allows us to render html elements in functions using render();
 import reactDOM from 'react-dom';
 
@@ -161,6 +162,8 @@ const GameLexiCrunch = () => {
     interupter: true
   })
 
+ 
+
   //RANDOMIZE MORE!
   const shuffleWord = (word) => {
     const shuffledWord = word.split('').sort(() => Math.random() - .5).join('');
@@ -178,6 +181,8 @@ const GameLexiCrunch = () => {
     //ADD MORE WORDS LATER!
 
   }, []);
+
+ 
 
 
   /*This function is passed a value, it then calls setPressedLetters which is a setState function.
@@ -453,11 +458,48 @@ const fetchDatamuse = async (word) => {
 
 //App is the main application without the LexiCrunch play area. It'll be a base for other components. The CSS is not working correctly but that should be an easy fix. 
 const App = () => {
+
+  const[isMusicPlaying, setIsMusicPlaying] = useState(false);
+
+  //Plays the background music 
+  useEffect(() => {
+    // Create an audio element
+    const backgroundMusic = new Audio(music);
+
+    // Set the audio to loop
+    backgroundMusic.loop = false;
+
+    backgroundMusic.volume = 0.35;
+
+    backgroundMusic.interupter = true;
+
+    if (isMusicPlaying) {
+      backgroundMusic.play();
+    } else {
+      backgroundMusic.pause();
+    }
+
+    // Clean up the audio element when the component is unmounted
+    return () => {
+      backgroundMusic.pause();
+      backgroundMusic.src = '';
+    };
+  }, [isMusicPlaying]);
+
+  const toggleMusic = () => {
+    if(!isMusicPlaying){
+      setIsMusicPlaying(true);
+    }
+    else{
+      setIsMusicPlaying(false);
+    }
+  }
   return (
     <div className="App">
           <div id = "testArea"></div>
-          <button onClick = {startGame}>StartGame</button>
-          <button onClick = {tearDown}>TearDown Button</button>
+          <button onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
+          <button onClick = {() => {tearDown(); setIsMusicPlaying(false)}}>TearDown Button</button>
+          <button onClick = {toggleMusic}>Music on/off</button>
     </div>
   );
 
