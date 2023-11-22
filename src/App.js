@@ -467,7 +467,7 @@ const App = () => {
     const backgroundMusic = new Audio(music);
 
     // Set the audio to loop
-    backgroundMusic.loop = false;
+    backgroundMusic.loop = true;
 
     backgroundMusic.volume = 0.35;
 
