@@ -192,6 +192,13 @@ const GameLexiCrunch = () => {
 
   const backspace = () => {
 
+    if (pressedLetters.length > 0) {
+      // Remove the last letter pressed
+      setPressedLetters((prevLetters) => prevLetters.slice(0, -1));
+
+      // Remove the last block pressed
+      setPressedBlocks((prevPressedBlocks) => prevPressedBlocks.slice(0, -1));
+    }
     
 
   }
@@ -335,6 +342,7 @@ const GameLexiCrunch = () => {
         <label id="lcScore">{score}</label>
         <span id="data"></span>
       </div>
+      <button onClick={backspace}>Undo</button>
         {game && <button onClick={wordSearch}>SUBMIT</button>}
         {!game && <p>Game Over! Thanks for playing!</p>}
         {game && <button onClick={EndGame}>End Session</button>} 
