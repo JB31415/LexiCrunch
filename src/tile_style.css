@@ -1,7 +1,7 @@
 /* tile_style.css */
 
-.falling-tile {
-  position: absolute;
+.letterTile {
+  position: relative;
   font-size: 1.5rem;
   font-weight: 500;
   width: 3rem;
@@ -13,15 +13,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for 3D effect */
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
   animation: fall 2s linear infinite; /* Falling animation */
-}
-
-@keyframes fall {
-  from {
-      transform: translateY(-100%);
-  }
-  to {
-      transform: translateY(100vh); /* Falling from top to bottom of the viewport */
-  }
 }
 
 .letter-button {
@@ -39,6 +30,10 @@
     background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
   }
   
-  .letter-button:hover {
-    background-color: rgb(176, 231, 255); /* Change background color on hover */
+  .letterTile:hover {
+    background-color: #2980b9; /* Change background color on hover */
+  }
+
+  .letterTile::selection {
+    background-color: #b929b6; /* Change background color on hover */
   }
