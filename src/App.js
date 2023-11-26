@@ -145,7 +145,6 @@ const GameLexiCrunch = () => {
   //const [cellStates, setCellStates] = useState([]);
 
   const [pressedLetters, setPressedLetters] = useState('');
-
   const [pressedBlocks, setPressedBlocks] = useState([]);
   const [submitList, setSubmitList] = useState([]);
   const [score, setScore] = useState(0);
@@ -153,7 +152,7 @@ const GameLexiCrunch = () => {
 
   const [animationControls, setAnimationControls] = useState({});
 
-  const [parent, enableAnimations] = useAutoAnimate({initial: { opacity: 1, duration: 0 }, duration: 0, animate: { opacity: 1, y: 0 }, transition: { duration: 0.0, ease: "easeInOut" }});
+  
 
 
     //plays sound effect
@@ -167,8 +166,6 @@ const GameLexiCrunch = () => {
   };
 
   useEffect(() => {
-
-    enableAnimations(false);
 
     const initialBlocks = Array.from({ length: 10 }, (_, i) =>
       Array.from({ length: 10 }, (_, j) => ({
@@ -184,7 +181,7 @@ const GameLexiCrunch = () => {
   }, []);
 
   function letterPicker() {
-    enableAnimations(false);
+
     let randomWord = tenWordList[Math.floor(Math.random() * tenWordList.length)];
     return randomWord[Math.floor(Math.random() * randomWord.length)];
 
@@ -204,8 +201,6 @@ const GameLexiCrunch = () => {
   }
   
   const handleClick = (rowIndex, columnIndex, letter) => {
-
-    enableAnimations(false);
 
     playSound();
   
@@ -247,9 +242,11 @@ const GameLexiCrunch = () => {
   // searches for word played from index
   const wordSearch = async () => {
 
-    enableAnimations(false);
+    
 
     if (dictList.includes(pressedLetters.toLowerCase())) {
+
+      
 
     pressedBlocks.forEach((block) => {
           
@@ -264,6 +261,10 @@ const GameLexiCrunch = () => {
       });
 
     });
+
+    
+    
+    
 
     if (dictList.includes(pressedLetters.toLowerCase())) {
 
@@ -287,47 +288,110 @@ const GameLexiCrunch = () => {
   };
 
   function wordsinstring(string) {
+
     const regex = /\bword\b/g;
     const matches = string.match(regex);
 
-    const count = matches ? matches.length : 100;
+    const count = matches ? matches.length : 1;
 
     if (count > 1000) {
       count = 1000;
     }
 
+    console.log({count});
+
     return count;
+
+  }
+
+  //computes the average score of a datamuse search
+  //NOTE: currently only used for computing single score for spellalike words.
+  function datamuseScore(string) {
+
+    //counts the number of scores for a word
+    const regex = /"score":(\d+)/g;
+
+    const matches = string.match(regex);
+  
+    let totalScore = 0;
+  
+    if (matches) {
+
+      matches.forEach((match) => {
+
+        const score = parseInt(match.split(":")[1]);
+        totalScore += score;
+
+      });
+
+    }
+  
+    const averageScore = matches ? totalScore / matches.length : 1;
+  
+    console.log(string + ' matches ' + matches + ' totalScore ' + totalScore + ' average score: ' + averageScore);
+  
+    return averageScore;
+
   }
 
   const fetchDatamuse = async (word) => {
+
     try {
-      enableAnimations(false);
-      let relatedresponse = await fetch(`https://api.datamuse.com/words?rel_trg=${word}`);
+      
+      console.log('related words: ');
+
+      let relatedresponse = await fetch(`https://api.datamuse.com/words?rel_trg=${word}&max=1000`);
       let relateddata = await relatedresponse.json();
       let relatedstring = JSON.stringify(relateddata);
       let numRelatedWords = wordsinstring(relatedstring);
 
-      let spelledresponse = await fetch(`https://api.datamuse.com/words?sp=${word}`);
+      console.log('spellalikes: ');
+
+      let spelledresponse = await fetch(`https://api.datamuse.com/words?sp=${word}&max=1`);
       let spelleddata = await spelledresponse.json();
       let spelledstring = JSON.stringify(spelleddata);
-      let numSpelledSimilar = wordsinstring(spelledstring);
+      let numSpelledSimilar = datamuseScore(spelledstring);
 
-      let soundresponse = await fetch(`https://api.datamuse.com/words?sl=${word}`);
+      console.log('soundalikes: ');
+
+      let soundresponse = await fetch(`https://api.datamuse.com/words?sl=${word}&max=1000`);
       let sounddata = await soundresponse.json();
       let soundstring = JSON.stringify(sounddata);
       let numSoundalikes = wordsinstring(soundstring);
 
+      const fscoreresponse = await fetch(`https://api.datamuse.com/words?sp=${word}&md=f&max=1`);
+      const fscoredata = await fscoreresponse.json();
+
+      let fscore = JSON.stringify(fscoredata);
+
+      let fstart = fscore.indexOf('f:');
+
+      let fscorestring = '';
+
+      for (let i = fstart + 2; i < fscore.length; i++) {
+        if (fscore[i] === '"') {
+          break; // Break the loop when a closing quote is encountered
+      }
+
+      fscorestring += fscore[i];
+      
+    }
+
+      console.log(`fscorestring: ${fscorestring}`);
+
       let lexiscore = Math.ceil(
-        ((1 / parseFloat(numSpelledSimilar)) +
-          (1 / parseFloat(numRelatedWords)) +
-          (1 / parseFloat(numSoundalikes))) *
-          1000
+
+        ((1 / parseFloat(numSpelledSimilar)) + (1 / parseFloat(numRelatedWords)) + (1 / parseFloat(numSoundalikes)) + (1 / parseFloat(fscorestring))) * 1000
+
       );
+
+      console.log('lexiscore: ' + lexiscore);
 
       updateScore(lexiscore);
     } catch (error) {
       console.error('Error fetching data from Datamuse API', error);
     }
+
   };
 
   const updateScore = (newScore) => {
@@ -342,7 +406,7 @@ const GameLexiCrunch = () => {
         <label id="lcScore">{score}</label>
         <span id="data"></span>
       </div>
-      <button onClick={backspace}>Undo</button>
+        {game && <button onClick={backspace}>Undo</button>}
         {game && <button onClick={wordSearch}>SUBMIT</button>}
         {!game && <p>Game Over! Thanks for playing!</p>}
         {game && <button onClick={EndGame}>End Session</button>} 
@@ -353,12 +417,10 @@ const GameLexiCrunch = () => {
         <AnimatePresence intial={false} >
         <ul style={{ display: 'flex', flexDirection: 'row' }}>
           {letterBlocks.map((column, columnIndex) => (
-            //enableAnimations(false),
-            <autoAnimate ref={parent} style={{ display: 'flex', flexDirection: 'column-reverse' }}>
+            <autoAnimate style={{ display: 'flex', flexDirection: 'column-reverse' }}>
             <motion.li key={column} layout style={{ display: 'flex', flexDirection: 'column-reverse' }}>
               
               {column.map((block) => (
-                enableAnimations(false),
                <autoAnimate initial={false} layout style={{ display: 'flex', flexDirection: 'column', borderRadius: 20 }}>
                 <LetterTile
                   key={block.key}
@@ -368,7 +430,6 @@ const GameLexiCrunch = () => {
                   unsubmitted={block.unsubmitted}
                   onClick={() => {
                     handleClick(block.rowIndex, block.columnIndex, block.letter);
-                    enableAnimations(false);
                   }}
                 />
                 </autoAnimate>
