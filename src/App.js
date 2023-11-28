@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback} from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import './tile_style.css';
+import './style.css';
 import soundEffect from "./pop-sound.wav";
 // Be sure to install use-sound by typing "npm install use-sound" in the command prompt
 import useSound from 'use-sound';
@@ -10,8 +10,6 @@ import music from './Chinese.wav';
 import reactDOM from 'react-dom';
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-
-import { AnimatePresence, motion, useAnimation } from 'framer-motion';
 
 //Still used to check for word, replace with dictionary and it should work. 
 //import { wordList } from './wordList';
@@ -134,156 +132,147 @@ const startGame = () => {
   //Render component in element specified by container
   root.render(<GameLexiCrunch></GameLexiCrunch>);
 
+
 }
 
 //GameLexiCrunch is the component of the game itself. It should be able to be placed anywhere and have a fully functioning LexiCrunch
 const GameLexiCrunch = () => {
 
+    /*First parameter is object we want to watch, second parameter is the 
+  function used to update the state. This is defined by react, not us, what we pass becomes the value 
+  useState is just the default state.
+  
+  Parameter passed to the useState method also determines type of the value???
+  useState is a react hook, specificially a state hook, updates and reacts when data or properties change
+  */
+ 
+  //RandomWord1 and 2 are the two rows of letters which you click build words
+  const [randomWord1, setRandomWord1] = useState('');
+  const [randomWord2, setRandomWord2] = useState('');
+
+  //pressedLetters are the buttons which appear when clicking the randomWord row.
+  const [pressedLetters, setPressedLetters] = useState('');
+
+  //submitList is the list of submitted words at the bottom of the page
+  const [submitList, setSubmitList] = useState([]);
+
+  //score usestate, self-explanatory. 
+  const [score, setScore] = useState(0);
+
   const [game, setGame] = useState(true);
 
-  const [letterBlocks, setLetterBlocks] = useState([]);
-  //const [cellStates, setCellStates] = useState([]);
+  //plays sound effect
+  const[playSound] = useSound(soundEffect, {
+    interupter: true
+  })
 
-  const [pressedLetters, setPressedLetters] = useState('');
-  const [pressedBlocks, setPressedBlocks] = useState([]);
-  const [submitList, setSubmitList] = useState([]);
-  const [score, setScore] = useState(0);
-  const TILE_SIZE = 50;
-
-  const [animationControls, setAnimationControls] = useState({});
-
-  
-
-
-    //plays sound effect
-    const[playSound] = useSound(soundEffect, {
-      interupter: true
-    })
-
-  //ends the game
+   //ends the game
   const EndGame = () => {
     setGame(false);
   };
 
-  useEffect(() => {
-
-    const initialBlocks = Array.from({ length: 10 }, (_, i) =>
-      Array.from({ length: 10 }, (_, j) => ({
-        key: `${i}-${j}`,
-        rowIndex: i,
-        columnIndex: j,
-        letter: letterPicker().toUpperCase(),
-        unsubmitted: true,
-      }))
-    );
-
-    setLetterBlocks(initialBlocks);
-  }, []);
-
-  function letterPicker() {
-
-    let randomWord = tenWordList[Math.floor(Math.random() * tenWordList.length)];
-    return randomWord[Math.floor(Math.random() * randomWord.length)];
-
-  }
-
-  const backspace = () => {
-
-    if (pressedLetters.length > 0) {
-      // Remove the last letter pressed
-      setPressedLetters((prevLetters) => prevLetters.slice(0, -1));
-
-      // Remove the last block pressed
-      setPressedBlocks((prevPressedBlocks) => prevPressedBlocks.slice(0, -1));
-    }
-    
-
-  }
-  
-  const handleClick = (rowIndex, columnIndex, letter) => {
-
-    playSound();
-  
-    // Check if the letter has already been pressed
-    const sameBlock = pressedBlocks.some(
-      (block) => block.rowIndex === rowIndex && block.columnIndex === columnIndex
-    );
-  
-    if (!sameBlock) {
-      if (pressedLetters.length < 101) {
-        setPressedLetters((prevLetters) => prevLetters + letter);
-        setPressedBlocks((prevPressedBlocks) => [...prevPressedBlocks, { rowIndex, columnIndex, letter }]);
-      } else {
-        alert('You cannot add more than 10 letters');
-      }
-    } else {
-      //alert('You cannot use the same letter block twice!');
-    }
+  //RANDOMIZE MORE!
+  const shuffleWord = (word) => {
+    const shuffledWord = word.split('').sort(() => Math.random() - .5).join('');
+    return shuffledWord;
   };
 
+  useEffect(() => {
+
+    createLetterStack();
+
+    //Defines setRandomWord() : Gets random word from tenWordList.js, shuffles it around, and updates the state. 
+    setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+    setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+
+    //ADD MORE WORDS LATER!
+
+  }, []);
+
+ 
 
 
-  const LetterTile = React.memo(({ rowIndex, columnIndex, unsubmitted, onClick }) => {
-    const [generatedLetter] = letterBlocks[rowIndex][columnIndex].letter;
+  /*This function is passed a value, it then calls setPressedLetters which is a setState function.
+  This is the onClick function used in the html. Joseph, 
+  */
+  const handleLetterClick = (letter, word, index) => {
+
+    //Parameters are passed correctly
+    console.log(letter + ' ' + index);
+
+    //if pressedletters < 10, add the letter clicked
+    if (pressedLetters.length < 10){
+      setPressedLetters((prevLetters) => prevLetters + letter);
+
+      //setRandomWord1((rowLetters) => rowLetters.substring[0, index] + rowLetters.substring[index + 1]);
+
+      setRandomWord2(word.substring(0, index) + word.substring(index + 1) );
+      playSound();
+
+      }
+      else{
+
+      }
+    }
   
-    const handleClickMemoized = useCallback(() => {
-      onClick(rowIndex, columnIndex, generatedLetter);
-    }, [rowIndex, columnIndex, generatedLetter, onClick]);
-  
-    return (
-      unsubmitted && (
-        <button className="letterTile" onClick={handleClickMemoized}>
-          {generatedLetter}
-        </button>
-      )
-    );
-  });
+    //This is the onClick function for the submit list. It will remove the button and return it to the 
+    //row above when clicked. Word is the entire submit list and index is the index of the clicked button 
+    const handleDeleteClick = (letter, word, index) => {
+      
+      //When buttonClicked, return the button to the row above.
+      setRandomWord2((prevLetters) => prevLetters + letter);
+      //Remove the button from the pressedLetters. 
+      setPressedLetters(word.substring(0, index) + word.substring(index + 1));
+      playSound();
 
-  // searches for word played from index
+    }
+
+  //used for wordSearch so that users cannot submit the exact same guess in succession
+  let onCooldown = false;
+  
+  //searches for word played from index
   const wordSearch = async () => {
 
-    
+  //If still in cooldown, do nothing
+  if (onCooldown) {
+    return;
+  }
 
+  //Set cooldown to true
+  onCooldown = true;
+
+  //Set a 500 ms timer to reset the cooldown. User cannot call submit again in this time
+  setTimeout(() => {
+    onCooldown = false;
+  }, 500);
+
+    //If submitted word is in the dictionary...
     if (dictList.includes(pressedLetters.toLowerCase())) {
 
-      
+      // Call fetchDatamuse for obscurity score
+      await fetchDatamuse(pressedLetters); 
 
-    pressedBlocks.forEach((block) => {
-          
-      setLetterBlocks((prevLetterBlocks) => {
-
-        const newLetterBlocks = [...prevLetterBlocks];
-      
-        newLetterBlocks[block.rowIndex][block.columnIndex].unsubmitted = false;
-    
-        return newLetterBlocks;
-        
-      });
-
-    });
-
-    
-    
-    
-
-    if (dictList.includes(pressedLetters.toLowerCase())) {
-
-      await fetchDatamuse(pressedLetters);
-
+      //Updates the submitted list with the new word
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
 
-    } else {
-      // alert('No match found.');
+      //Top row gets a new 10 letter word. 
+      setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+
+       //Top row is moved to the bottom row.
+      setRandomWord2(randomWord1);
+
+    } 
+
+    //If word not found
+    else {
+
+      //return letters to top row
+      setRandomWord2((prevLetters) => (prevLetters + pressedLetters.toLowerCase()));
+
     }
-    //setPressedLetters('');
 
-  }
-  else {
-    
-  }
-
-  setPressedLetters('');
-  setPressedBlocks([]);
+    //Clear the pressedLetters. 
+    setPressedLetters('');
 
   };
 
@@ -387,78 +376,123 @@ const GameLexiCrunch = () => {
 
       console.log('lexiscore: ' + lexiscore);
 
+      //users receive 0 points if same word is used in same round
+      if (submitList.includes(pressedLetters.toLowerCase())) {
+
+        lexiscore = 0;
+
+      }
+
       updateScore(lexiscore);
+
     } catch (error) {
       console.error('Error fetching data from Datamuse API', error);
     }
 
   };
 
-  const updateScore = (newScore) => {
-    setScore((prevScore) => prevScore + newScore);
-  };
+  // updates the score after each valid word.
+  const updateScore = (newScore) =>
+  {
 
-  return (
+      //Why are updateScore and setScore two different functions? 
 
-    <div className="App">
+      // replace score function with Collen's
+          //score += newScore; 
+          //score += newScore;
+          setScore(prevScore => prevScore + newScore);
+
+          //console.log(score + "+");
+  
+  };  
+
+  //parameters are a word representing the row and the onClickFunction that gets called by onClick
+  const generateLetterTiles = (word, onClickFunction) => {
+
+    //console.log(word);
+    const letters = word.split('');
+
+    return (
+
+      <div className="button-row">
+
+        {letters.map((letter, index) => (
+
+
+          /*
+          <button id = {"buttonNum" + index}  key={index} className="letter-button" onClick={() => onClick(letter, index)}>
+
+            {letter}
+
+          </button>
+*/        
+
+          <button  className="letter-button" onClick={() => onClickFunction(letter, word, index)}>
+
+            {letter}
+
+          </button>
+
+
+
+        ))}
+
+      </div>
+
+    );
+
+        };
+
+  //Return GameLexiCrunch, basically returns all the html to make LexiCrunch. 
+  return(
+    <div className = "App">
+    <header className="App-header">
+      <div class="gameElements">
+      {game && <button className="end-session-button" onClick={EndGame}>End Session</button>} 
+      {!game && <p>Game Over! Thanks for playing!</p>}
       <div class="scoreboard">
         <label>Your Score is: </label>
         <label id="lcScore">{score}</label>
         <span id="data"></span>
       </div>
-        {game && <button onClick={backspace}>Undo</button>}
-        {game && <button onClick={wordSearch}>SUBMIT</button>}
-        {!game && <p>Game Over! Thanks for playing!</p>}
-        {game && <button onClick={EndGame}>End Session</button>} 
-
-{game &&
-        <ul style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-        <autoAnimate intial={false}>
-        <AnimatePresence intial={false} >
-        <ul style={{ display: 'flex', flexDirection: 'row' }}>
-          {letterBlocks.map((column, columnIndex) => (
-            <autoAnimate style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <motion.li key={column} layout style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-              
-              {column.map((block) => (
-               <autoAnimate initial={false} layout style={{ display: 'flex', flexDirection: 'column', borderRadius: 20 }}>
-                <LetterTile
-                  key={block.key}
-                  rowIndex={block.rowIndex}
-                  columnIndex={block.columnIndex}
-                  letter={block.letter}
-                  unsubmitted={block.unsubmitted}
-                  onClick={() => {
-                    handleClick(block.rowIndex, block.columnIndex, block.letter);
-                  }}
-                />
-                </autoAnimate>
-              ))}
-            </motion.li>
-            </autoAnimate>
-          ))}
-        </ul>
-        </AnimatePresence>
-        </autoAnimate>
-        </ul>
-
-      }
 
       {game &&
-      <div className="submit-list">
-      <h1>{pressedLetters}</h1>
-
+        <div id="first-row" className="letter-row">
+          {generateLetterTiles(randomWord1, handleLetterClick)}
+        </div>
+      }
+      {game &&
+        <div id="second-row" className="letter-row">
+          {generateLetterTiles(randomWord2, handleLetterClick)}
+        </div>
+      }
+      {game &&
+        <div className="Interface-keys">
+          <button className="submit-button" onClick={wordSearch}>SUBMIT</button>
+        </div>
+      }
+      {game &&
+        <div className="pressed-letters">{generateLetterTiles(pressedLetters, handleDeleteClick)}</div>
+      }
+        <br></br>
+        <div className="submit-list">
           <h2>Submitted Words</h2>
+          <autoAnimate style={{ display: 'flex', flexDirection: 'column-reverse' }}>
           <ul>
             {submitList.map((word, index) => (
               <li key={index}>{word}</li>
             ))}
           </ul>
+          </autoAnimate>
         </div>
-      }
-    </div>
-  );
-};
+        </div>
+        </header>
+        </div>
+        
+      
+  )
+
+}
 
 //App is the main application without the LexiCrunch play area. It'll be a base for other components. The CSS is not working correctly but that should be an easy fix. 
 const App = () => {

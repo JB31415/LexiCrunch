@@ -1,0 +1,51 @@
+/* style.css */
+
+.letter-button {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 3px;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: rgb(255, 253, 226);
+    border: none;
+    border-radius: 3px; /* Add border-radius for rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for 3D effect */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+  }
+  
+  .letter-button:hover {
+    background-color: rgb(176, 231, 255); /* Change background color on hover */
+  }
+
+  .end-session-button {
+    /* Add your desired styles here */
+    background-color: #3d3d3d;
+    text-transform: uppercase;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+  }
+
+  /* Add additional styles for hover or active states if needed */
+.end-session-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.submit-button {
+  /* Add your desired styles here */
+  background-color: rgb(250, 254, 0);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
