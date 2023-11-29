@@ -241,10 +241,10 @@ const GameLexiCrunch = () => {
   //Set cooldown to true
   onCooldown = true;
 
-  //Set a 500 ms timer to reset the cooldown. User cannot call submit again in this time
+  //Set a 1000 ms timer to reset the cooldown. User cannot call submit again in this time
   setTimeout(() => {
     onCooldown = false;
-  }, 500);
+  }, 1000);
 
     //If submitted word is in the dictionary...
     if (dictList.includes(pressedLetters.toLowerCase())) {
@@ -477,13 +477,11 @@ const GameLexiCrunch = () => {
         <br></br>
         <div className="submit-list">
           <h2>Submitted Words</h2>
-          <autoAnimate style={{ display: 'flex', flexDirection: 'column-reverse' }}>
           <ul>
             {submitList.map((word, index) => (
               <li key={index}>{word}</li>
             ))}
           </ul>
-          </autoAnimate>
         </div>
         </div>
         </header>
@@ -535,9 +533,9 @@ const App = () => {
   return (
     <div className="App">
           <div id = "testArea"></div>
-          <button onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
+          <button className="start-button" onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
           <button onClick = {() => {tearDown(); setIsMusicPlaying(false)}}>TearDown Button</button>
-          <button onClick = {toggleMusic}>Music on/off</button>
+          <button className="music-button" onClick = {toggleMusic}>Music on/off</button>
     </div>
   );
 

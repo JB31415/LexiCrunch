@@ -1,5 +1,43 @@
 /* style.css */
 
+.start-button {
+  /* Add your desired styles here */
+  background-color: rgb(38, 254, 0);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.music-button {
+  /* Add your desired styles here */
+  background-color: rgb(254, 0, 229);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+  /* Add additional styles for hover or active states if needed */
+  .start-button:hover {
+    background-color: rgb(119, 255, 0)
+  }
+
+
+.scoreboard {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
 .letter-button {
     font-size: 1.5rem;
     font-weight: 500;
@@ -34,7 +72,7 @@
 
   /* Add additional styles for hover or active states if needed */
 .end-session-button:hover {
-  background-color: #45a049; /* Darker green on hover */
+  background-color: #000000; /* Darker green on hover */
 }
 
 .submit-button {
@@ -47,5 +85,10 @@
   border: none; 
   border-radius: 5px;
   cursor: pointer;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
 }
+
+  /* Add additional styles for hover or active states if needed */
+  .submit-button:hover {
+    background-color: rgb(255, 213, 0)
+  }
