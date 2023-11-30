@@ -1,5 +1,57 @@
 /* style.css */
 
+.start-button {
+  /* Add your desired styles here */
+  background-color: rgb(106, 255, 0);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.start-button:hover {
+  /* Add your desired styles here */
+  background-color: rgb(136, 255, 50);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.start-button:hover {
+  /* Add your desired styles here */
+  background-color: rgb(106, 255, 0);
+  text-transform: uppercase;
+  color: rgb(34, 121, 0);
+  padding: 11px 21px;
+  font-size: 17px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.music-button {
+  /* Add your desired styles here */
+  background-color: rgb(255, 0, 255);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
 .letter-button {
     font-size: 1.5rem;
     font-weight: 500;
@@ -47,5 +99,66 @@
   border: none; 
   border-radius: 5px;
   cursor: pointer;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.submit-button:hover {
+  /* Add your desired styles here */
+  background-color: rgb(253, 255, 136);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 18px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:active {
+  /* Add your desired styles here */
+  background-color: rgb(254, 255, 175);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 11px 21px;
+  font-size: 18px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.submit-button.tooShort {
+  /* Add your desired styles here */
+  background-color: rgba(250, 254, 0, 0.801);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button.tooShort:hover {
+  /* Add your desired styles here */
+  background-color: rgba(250, 254, 0, 0.801);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button.tooShort:active {
+  /* Add your desired styles here */
+  background-color: rgba(250, 254, 0, 0.801);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
 }

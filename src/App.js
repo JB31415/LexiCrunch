@@ -472,7 +472,7 @@ const GameLexiCrunch = () => {
         <label id="lcScore">{score}</label>
         <span id="data"></span>
       </div>
-      <div>{timeLeft}</div>
+      {game && <div>{timeLeft}</div>}
       {game &&
         <div id="first-row" className="letter-row">
           {generateLetterTiles(randomWord1, handleLetterClick)}
@@ -485,7 +485,11 @@ const GameLexiCrunch = () => {
       }
       {game &&
         <div className="Interface-keys">
-          <button className="submit-button" onClick={wordSearch}>SUBMIT</button>
+      <button
+        className={`submit-button ${pressedLetters.length < 3 ? 'tooShort' : ''}`}
+        onClick={pressedLetters.length >= 3 ? wordSearch : null}
+      >
+        SUBMIT</button>
         </div>
       }
       {game &&
@@ -552,9 +556,9 @@ const App = () => {
   return (
     <div className="App">
           <div id = "testArea"></div>
-          <button onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
+          <button className='start-button' onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
           <button onClick = {() => {tearDown(); setIsMusicPlaying(false)}}>TearDown Button</button>
-          <button onClick = {toggleMusic}>Music on/off</button>
+          <button className='music-button' onClick = {toggleMusic}>Music on/off</button>
     </div>
   );
 
