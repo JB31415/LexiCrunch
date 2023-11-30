@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <style>
+      .instructions{
+        height: 100vh;
+        width: 75%;
+        height: 25%;
+        text-align:center; 
+        margin: auto;
+        color: white;
+      }
+    </style>
+    <link rel = "styleSheet" href = "index.css">
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,8 +41,24 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
 
+      
+      <div id = "playArea">
+        <div id ="instructions">
+          <h1>Welcome to LexiCrunch
+      
+          </h1>
+          <h3>LexiCrunch Instructions</h3>
+          <p>You are given 20 letter tiles at the start of the game. You must make a word from 
+            the 10 tiles in the bottom row. The top row is not available for use but is visible. 
+            Once a valid word has been submitted, the top row will move down and can be used to 
+            make the next word. A new top row will come down from off-screen. You will have 1 
+            minute to make up to 10 words, 1 word per row of letter tiles. You will be scored 
+            based on the length and novelty of the word you have submitted. Once you have made   
+            10 words, or when the timer expires, whichever comes first, the game is over. Click 
+            the button below to clear these instructions and play the game.</p>
+        </div>
+      </div>
       <div id="root"></div>
-      <div id = "playArea"></div>
     
     <!--
       This HTML file is a template.

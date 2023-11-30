@@ -23,6 +23,26 @@ import {tenWordList} from './tenWordList';
 //List with all words in dictionaries
 import {dictList} from './dictList';
 
+//Simple delay function
+const delay = ms => new Promise(
+  resolve => setTimeout(resolve, ms)
+);
+
+const ExitScreen = () => {
+
+  return(
+    <div class="instructions">
+    <h1>Game Over!</h1>
+    <p id="score"></p>
+    <p>Thank you for playing LexiCrunch. Click the button below to play again.</p>
+    <button onclick="restartGame()">Play Again</button>
+  </div>
+  )
+
+};
+
+
+
 //NOT FULLY FUNCTIONING YET!
 const createLetterStack = () => {
 
@@ -86,19 +106,15 @@ const tearDown = () => {
 
 
   //When a second render is called, the first render is removed. This should be good for updating
-  root.render(<h1>Testing </h1>);
+  root.render(<h1>Testing </h1>); 
 
-
-  //Replace the html below with the end screen. 
-  root.render(<h2>second</h2>);    
-
-  
 
 
 }
 
+
 //Start game finds the div with id = playArea, and renders the GameLexicrunch component into it. 
-const startGame = () => {
+const startGame = async event => {
 
   /*  IMPORTANT INFORMATION ON RENDERING
 
@@ -122,16 +138,17 @@ const startGame = () => {
 
 
   //Get root element
-  const container = document.getElementById("playArea");
+  //const container = document.getElementById("playArea");
 
   //Use reactDOM to create a root, this allows us to render elements at the container. 
-  const root = reactDOM.createRoot(container);
+  //const root = reactDOM.createRoot(container);
 
 
   
   //Render component in element specified by container
   root.render(<GameLexiCrunch></GameLexiCrunch>);
 
+  console.log("End of StartGame");
 
 }
 
@@ -190,6 +207,14 @@ const GameLexiCrunch = () => {
   }, []);
 
  
+
+  const waitEndGame = async event => {
+    console.log("Before");
+    //await delay(10)
+    console.log("middle");
+    EndGame();
+    console.log("after");
+  }
 
 
   /*This function is passed a value, it then calls setPressedLetters which is a setState function.
@@ -445,9 +470,9 @@ const GameLexiCrunch = () => {
 
   //Return GameLexiCrunch, basically returns all the html to make LexiCrunch. 
   return(
-    <div className = "App">
+    <div  className = "App">
     <header className="App-header">
-      <div class="gameElements">
+      <div onLoad = {EndGame} class="gameElements">
       {game && <button className="end-session-button" onClick={EndGame}>End Session</button>} 
       {!game && <p>Game Over! Thanks for playing!</p>}
       <div class="scoreboard">
@@ -531,10 +556,10 @@ const App = () => {
     }
   }
   return (
-    <div className="App">
+    
+    <div  className="App">
           <div id = "testArea"></div>
           <button className="start-button" onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
-          <button onClick = {() => {tearDown(); setIsMusicPlaying(false)}}>TearDown Button</button>
           <button className="music-button" onClick = {toggleMusic}>Music on/off</button>
     </div>
   );
