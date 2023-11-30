@@ -171,6 +171,23 @@ const GameLexiCrunch = () => {
     setGame(false);
   };
 
+  const [timeLeft, setTimeLeft] = useState(120);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+
+      if (timeLeft <= 0) {
+        clearInterval(timerId);
+        EndGame();
+      }
+    }, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(timerId);
+  }, [timeLeft]); // Include timeLeft as a dependency to avoid potential issues
+
+
   //RANDOMIZE MORE!
   const shuffleWord = (word) => {
     const shuffledWord = word.split('').sort(() => Math.random() - .5).join('');
@@ -455,7 +472,7 @@ const GameLexiCrunch = () => {
         <label id="lcScore">{score}</label>
         <span id="data"></span>
       </div>
-
+      <div>{timeLeft}</div>
       {game &&
         <div id="first-row" className="letter-row">
           {generateLetterTiles(randomWord1, handleLetterClick)}
