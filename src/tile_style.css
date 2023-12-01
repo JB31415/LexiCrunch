@@ -54,38 +54,37 @@
 
 .submit-button {
   /* Add your desired styles here */
-  background-color: rgb(250, 254, 0);
+  background-color: rgba(0, 0, 0, 0.495);
   text-transform: uppercase;
-  color: rgb(14, 0, 0);
-  padding: 50px 350px;
-  font-size: 30px; 
-  border: none; 
-  border-radius: 5px;
+  padding: 20px 35px;
+  font-size: 30px;
+  font: bold;
+  border: whitesmoke;
+  border-radius: 20px;
   cursor: pointer;
-  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
 }
 
 .submit-button:hover {
   /* Add your desired styles here */
-  background-color: rgb(253, 255, 136);
+  background-color: rgba(0, 0, 0, 0.495);
   text-transform: uppercase;
-  color: rgb(14, 0, 0);
-  padding: 51px 351px;
-  font-size: 31px; 
-  border: none; 
-  border-radius: 5px;
+  padding: 21px 36px;
+  font-size: 35px;
+  font: bold; 
+  border: whitesmoke;
+  border-radius: 21px;
   cursor: pointer;
 }
 
 .submit-button:active {
   /* Add your desired styles here */
-  background-color: rgb(254, 255, 175);
+  background-color: rgba(0, 0, 0, 0.495);
   text-transform: uppercase;
-  color: rgb(14, 0, 0);
-  padding: 52px 352px;
-  font-size: 32px; 
-  border: none; 
-  border-radius: 5px;
+  padding: 22px 37px;
+  font-size: 36px;
+  font: bold; 
+  border: whitesmoke;
+  border-radius: 21px;
   cursor: pointer;
 }
 
@@ -99,14 +98,21 @@
   border: none; 
   border-radius: 5px;
   cursor: pointer;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+
 }
 
-  /* Add additional styles for hover or active states if needed */
-  .end-session-button:hover {
-    background-color: #343434;
-    padding: 8px 18px;
-  }
+.end-session-button:hover {
+  /* Add your desired styles here */
+  background-color: #6c0000;
+  text-transform: uppercase;
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+
+}
 
 .letterTile {
   position: relative;
@@ -120,7 +126,6 @@
   border-radius: 3px; /* Add border-radius for rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for 3D effect */
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
-  animation: fall 2s linear infinite; /* Falling animation */
 }
 
 .upperTile {
@@ -181,10 +186,19 @@
     width: 3rem;
     height: 3rem;
     text-transform: uppercase;
-    background-color: rgb(255, 246, 119);
+    background-color: rgb(255, 247, 133);
     border: none;
-    border-radius: 3px; /* Add border-radius for rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for 3D effect */
-    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
-    animation: fall 2s linear infinite; /* Falling animation */
+    border-radius: 2.5px; /* Add border-radius for rounded corners */
+  }
+
+  .pressedTile:hover {
+    position: relative;
+    font-size: 2.0rem;
+    font-weight: 500;
+    width: 3rem;
+    height: 3rem;
+    text-transform: uppercase;
+    background-color: rgb(255, 247, 133);
+    border: none;
+    border-radius: 2.5px; /* Add border-radius for rounded corners */
   }
