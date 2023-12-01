@@ -1,5 +1,113 @@
 /* tile_style.css */
 
+.start-button {
+  /* Add your desired styles here */
+  background-color: rgb(106, 255, 0);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.start-button:hover {
+  /* Add your desired styles here */
+  background-color: rgb(136, 255, 50);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.start-button:active {
+  /* Add your desired styles here */
+  background-color: rgb(106, 255, 0);
+  text-transform: uppercase;
+  color: rgb(34, 121, 0);
+  padding: 11px 21px;
+  font-size: 17px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.music-button {
+  /* Add your desired styles here */
+  background-color: rgb(255, 0, 255);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.submit-button {
+  /* Add your desired styles here */
+  background-color: rgb(250, 254, 0);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 50px 350px;
+  font-size: 30px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+.submit-button:hover {
+  /* Add your desired styles here */
+  background-color: rgb(253, 255, 136);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 51px 351px;
+  font-size: 31px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:active {
+  /* Add your desired styles here */
+  background-color: rgb(254, 255, 175);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 52px 352px;
+  font-size: 32px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.end-session-button {
+  /* Add your desired styles here */
+  background-color: #3d3d3d;
+  text-transform: uppercase;
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+}
+
+  /* Add additional styles for hover or active states if needed */
+  .end-session-button:hover {
+    background-color: #343434;
+    padding: 8px 18px;
+  }
+
 .letterTile {
   position: relative;
   font-size: 1.5rem;
@@ -15,25 +123,68 @@
   animation: fall 2s linear infinite; /* Falling animation */
 }
 
-.letter-button {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin: 0 3px;
-    width: 3rem;
-    height: 3rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    background-color: rgb(255, 253, 226);
-    border: none;
-    border-radius: 3px; /* Add border-radius for rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for 3D effect */
-    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
-  }
+.upperTile {
+  position: relative;
+  font-size: 1.5rem;
+  font-weight: 500;
+  width: 3rem;
+  height: 3rem;
+  opacity: 50%;
+  text-transform: uppercase;
+  background-color: rgb(255, 250, 174);
+  border: none;
+  border-radius: 3px; /* Add border-radius for rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for 3D effect */
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+  animation: fall 2s linear infinite; /* Falling animation */
+}
   
   .letterTile:hover {
     background-color: #2980b9; /* Change background color on hover */
+    font-size: 1.8rem;
   }
 
   .letterTile::selection {
     background-color: #b929b6; /* Change background color on hover */
+  }
+
+  .score-board {
+    /* Add your desired styles here */
+    background-color: rgb(255, 216, 61);
+    text-transform: uppercase;
+    color: rgb(14, 0, 0);
+    padding: 10px 20px;
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer;
+    background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+    }
+
+  .submissions {
+  /* Add your desired styles here */
+  background-color: rgb(106, 255, 0);
+  text-transform: uppercase;
+  color: rgb(14, 0, 0);
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0)); /* Add glossy effect */
+  }
+
+  .pressedTile {
+    position: relative;
+    font-size: 1.5rem;
+    font-weight: 500;
+    width: 3rem;
+    height: 3rem;
+    text-transform: uppercase;
+    background-color: rgb(255, 246, 119);
+    border: none;
+    border-radius: 3px; /* Add border-radius for rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for 3D effect */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); /* Add glossy effect */
+    animation: fall 2s linear infinite; /* Falling animation */
   }

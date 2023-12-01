@@ -152,8 +152,16 @@ const GameLexiCrunch = () => {
 
   const [animationControls, setAnimationControls] = useState({});
 
-  
-
+  const bottomZero = useRef(0);
+  const bottomOne = useRef(0);
+  const bottomTwo = useRef(0);
+  const bottomThree = useRef(0);
+  const bottomFour = useRef(0);
+  const bottomFive = useRef(0);
+  const bottomSix = useRef(0);
+  const bottomSeven = useRef(0);
+  const bottomEight = useRef(0);
+  const bottomNine = useRef(0);
 
     //plays sound effect
     const[playSound] = useSound(soundEffect, {
@@ -164,6 +172,22 @@ const GameLexiCrunch = () => {
   const EndGame = () => {
     setGame(false);
   };
+
+  const [timeLeft, setTimeLeft] = useState(120);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+
+      if (timeLeft <= 0) {
+        clearInterval(timerId);
+        EndGame();
+      }
+    }, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(timerId);
+  }, [timeLeft]); // Include timeLeft as a dependency to avoid potential issues
 
   useEffect(() => {
 
@@ -201,8 +225,6 @@ const GameLexiCrunch = () => {
   }
   
   const handleClick = (rowIndex, columnIndex, letter) => {
-
-    playSound();
   
     // Check if the letter has already been pressed
     const sameBlock = pressedBlocks.some(
@@ -210,7 +232,8 @@ const GameLexiCrunch = () => {
     );
   
     if (!sameBlock) {
-      if (pressedLetters.length < 101) {
+      playSound();
+      if (pressedLetters.length < 10) {
         setPressedLetters((prevLetters) => prevLetters + letter);
         setPressedBlocks((prevPressedBlocks) => [...prevPressedBlocks, { rowIndex, columnIndex, letter }]);
       } else {
@@ -221,9 +244,35 @@ const GameLexiCrunch = () => {
     }
   };
 
+  const undo = (rowIndex, columnIndex, letter) => {
+    const remainingOccurrences = pressedBlocks.filter(
+      (block) => block.letter === letter && (block.rowIndex !== rowIndex || block.columnIndex !== columnIndex)
+    );
+  
+    setLetterBlocks((prevLetterBlocks) => {
+      const newLetterBlocks = [...prevLetterBlocks];
+      
+      // If no remaining occurrences of the pressed letter, update unpressed property
+      if (remainingOccurrences.length === 0) {
+        newLetterBlocks[rowIndex][columnIndex].unpressed = true;
+      }
+  
+      return newLetterBlocks;
+    });
+  
+    const newPressedBlocks = pressedBlocks.filter(
+      (block) => block.rowIndex !== rowIndex || block.columnIndex !== columnIndex || block.letter !== letter
+    );
+  
+    setPressedBlocks(newPressedBlocks);
+  
+    const remainingLetters = newPressedBlocks.map((block) => block.letter).join('');
+    setPressedLetters(remainingLetters);
+  };
 
 
-  const LetterTile = React.memo(({ rowIndex, columnIndex, unsubmitted, onClick }) => {
+
+  const LetterTile = React.memo(({ rowIndex, columnIndex, unsubmitted, onClick, className }) => {
     const [generatedLetter] = letterBlocks[rowIndex][columnIndex].letter;
   
     const handleClickMemoized = useCallback(() => {
@@ -232,7 +281,7 @@ const GameLexiCrunch = () => {
   
     return (
       unsubmitted && (
-        <button className="letterTile" onClick={handleClickMemoized}>
+        <button className={className} onClick={handleClickMemoized}>
           {generatedLetter}
         </button>
       )
@@ -249,7 +298,31 @@ const GameLexiCrunch = () => {
       
 
     pressedBlocks.forEach((block) => {
-          
+
+      const rowIndex = block.rowIndex; // Assuming columnIndex is a property of block
+      
+      if (rowIndex === 0) {
+        bottomZero.current += 1;
+      } else if (rowIndex === 1) {
+        bottomOne.current += 1;
+      } else if (rowIndex === 2) {
+        bottomTwo.current += 1;
+      } else if (rowIndex === 3) {
+        bottomThree.current += 1;
+      } else if (rowIndex === 4) {
+        bottomFour.current += 1;
+      } else if (rowIndex === 5) {
+        bottomFive.current += 1;
+      } else if (rowIndex === 6) {
+        bottomSix.current += 1;
+      } else if (rowIndex === 7) {
+        bottomSeven.current += 1;
+      } else if (rowIndex === 8) {
+        bottomEight.current += 1;
+      } else if (rowIndex === 9) {
+        bottomNine.current += 1;
+      }
+
       setLetterBlocks((prevLetterBlocks) => {
 
         const newLetterBlocks = [...prevLetterBlocks];
@@ -401,17 +474,14 @@ const GameLexiCrunch = () => {
   return (
 
     <div className="App">
-      <div class="scoreboard">
-        <label>Your Score is: </label>
-        <label id="lcScore">{score}</label>
+      <div class="scoreboard" layout style={{ display: 'flex', flexDirection: 'column'}}>
+      {game && <button className="end-session-button" style={{ maxWidth: '200px', alignSelf: 'center', marginTop: '25px'}} onClick={EndGame}>End Session</button>} 
+        <label id="lcScore" style={{ fontSize: '3rem', color: 'white' }}>Your Score is: {score}</label>
         <span id="data"></span>
       </div>
-        {game && <button onClick={backspace}>Undo</button>}
-        {game && <button onClick={wordSearch}>SUBMIT</button>}
-        {!game && <p>Game Over! Thanks for playing!</p>}
-        {game && <button onClick={EndGame}>End Session</button>} 
-
-{game &&
+        {!game && <p style={{ fontSize: '3rem', color: 'white' }}>Game Over! Thanks for playing!</p>}
+        {game && <div style={{ fontSize: '2rem', color: 'white' }}>{timeLeft}</div>}
+        {game &&
         <ul style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <autoAnimate intial={false}>
         <AnimatePresence intial={false} >
@@ -429,34 +499,74 @@ const GameLexiCrunch = () => {
                   letter={block.letter}
                   unsubmitted={block.unsubmitted}
                   onClick={() => {
-                    handleClick(block.rowIndex, block.columnIndex, block.letter);
+                    if ((block.rowIndex === 0 && block.columnIndex === bottomZero.current) || (block.rowIndex === 1 && block.columnIndex === bottomOne.current) || (block.rowIndex === 2 && block.columnIndex === bottomTwo.current) || (block.rowIndex === 3 && block.columnIndex === bottomThree.current) || (block.rowIndex === 4 && block.columnIndex === bottomFour.current) || (block.rowIndex === 5 && block.columnIndex === bottomFive.current) || (block.rowIndex === 6 && block.columnIndex === bottomSix.current) || (block.rowIndex === 7 && block.columnIndex === bottomSeven.current) || (block.rowIndex === 8 && block.columnIndex === bottomEight.current) || (block.rowIndex === 9 && block.columnIndex === bottomNine.current)) {
+                      handleClick(block.rowIndex, block.columnIndex, block.letter);
+                    }
                   }}
+                  className={
+                    (block.rowIndex === 0 && block.columnIndex === bottomZero.current) ||
+                    (block.rowIndex === 1 && block.columnIndex === bottomOne.current) ||
+                    (block.rowIndex === 2 && block.columnIndex === bottomTwo.current) ||
+                    (block.rowIndex === 3 && block.columnIndex === bottomThree.current) ||
+                    (block.rowIndex === 4 && block.columnIndex === bottomFour.current) ||
+                    (block.rowIndex === 5 && block.columnIndex === bottomFive.current) ||
+                    (block.rowIndex === 6 && block.columnIndex === bottomSix.current) ||
+                    (block.rowIndex === 7 && block.columnIndex === bottomSeven.current) ||
+                    (block.rowIndex === 8 && block.columnIndex === bottomEight.current) ||
+                    (block.rowIndex === 9 && block.columnIndex === bottomNine.current)
+                      ? 'letterTile'
+                      : 'upperTile'
+                  }
                 />
                 </autoAnimate>
               ))}
             </motion.li>
             </autoAnimate>
-          ))}
+          ))}         
+            <ul className="submissions">Submitted Words
+            {submitList.map((word, index) => (
+              <li className="submissions" key={index}>{word}</li>
+            ))}
+          </ul>
         </ul>
         </AnimatePresence>
         </autoAnimate>
         </ul>
+        }
 
-      }
 
       {game &&
-      <div className="submit-list">
-      <h1>{pressedLetters}</h1>
-
-          <h2>Submitted Words</h2>
-          <ul>
-            {submitList.map((word, index) => (
-              <li key={index}>{word}</li>
-            ))}
-          </ul>
-        </div>
+      <button className="submit-button" style={{ marginTop: '75px' }} onClick={wordSearch}>SUBMIT</button>
       }
+      {game &&
+      <autoAnimate initial={false}>
+      <AnimatePresence intial={false} >
+      <motion.div className="submit-list" style={{ marginTop: '140px' }}>        
+        <ul style={{ display: 'flex', flexDirection: 'row', listStyle: 'none', padding: 0 }}>
+          {pressedBlocks.map((block, index) => (
+            <div key={index}>
+              <button className="pressedTile" onClick={() => {
+                    undo(block.rowIndex, block.columnIndex, block.letter);
+                  }}>{block.letter}</button>
+            </div>
+          ))}
+        </ul>
+
+
+        </motion.div>
+        </AnimatePresence>
+        </autoAnimate>
+      }
+
+        {!game &&
+        <ul style={{ fontSize: '2.5rem', color: 'white' }}>Submitted Words
+        {submitList.map((word, index) => (
+        <div key={index}>{word}</div>
+        ))}
+        </ul>
+        }
     </div>
+    
   );
 };
 
@@ -501,9 +611,8 @@ const App = () => {
   return (
     <div className="App">
           <div id = "testArea"></div>
-          <button onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
-          <button onClick = {() => {tearDown(); setIsMusicPlaying(false)}}>TearDown Button</button>
-          <button onClick = {toggleMusic}>Music on/off</button>
+          <button className="start-button" onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
+          <button className="music-button" onClick = {toggleMusic}>Music on/off</button>
     </div>
   );
 
