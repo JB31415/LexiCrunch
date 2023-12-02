@@ -188,6 +188,23 @@ const GameLexiCrunch = () => {
     setGame(false);
   };
 
+  const [timeLeft, setTimeLeft] = useState(120);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+
+      if (timeLeft <= 0) {
+        clearInterval(timerId);
+        EndGame();
+      }
+    }, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(timerId);
+  }, [timeLeft]); // Include timeLeft as a dependency to avoid potential issues
+
+
   //RANDOMIZE MORE!
   const shuffleWord = (word) => {
     const shuffledWord = word.split('').sort(() => Math.random() - .5).join('');
@@ -480,7 +497,7 @@ const GameLexiCrunch = () => {
         <label id="lcScore">{score}</label>
         <span id="data"></span>
       </div>
-
+      {game && <div>{timeLeft}</div>}
       {game &&
         <div id="first-row" className="letter-row">
           {generateLetterTiles(randomWord1, handleLetterClick)}
@@ -493,12 +510,17 @@ const GameLexiCrunch = () => {
       }
       {game &&
         <div className="Interface-keys">
-          <button className="submit-button" onClick={wordSearch}>SUBMIT</button>
+      <button
+        className={`submit-button ${pressedLetters.length < 3 ? 'tooShort' : ''}`}
+        onClick={pressedLetters.length >= 3 ? wordSearch : null}
+      >
+        SUBMIT</button>
         </div>
       }
       {game &&
         <div className="pressed-letters">{generateLetterTiles(pressedLetters, handleDeleteClick)}</div>
       }
+        <br></br>
         <br></br>
         <div className="submit-list">
           <h2>Submitted Words</h2>
@@ -559,8 +581,8 @@ const App = () => {
     
     <div  className="App">
           <div id = "testArea"></div>
-          <button className="start-button" onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
-          <button className="music-button" onClick = {toggleMusic}>Music on/off</button>
+          <button className='start-button' onClick = {() => {startGame(); setIsMusicPlaying(true)}}>StartGame</button>
+          <button className='music-button' onClick = {toggleMusic}>Music on/off</button>
     </div>
   );
 
