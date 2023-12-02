@@ -298,10 +298,10 @@ const wordSearch = async () => {
 
   }
 
-  // disable cooldown after 1000 ms delay
+  // disable cooldown after 500 ms delay
   setTimeout(() => {
     onCooldown.current = false;
-  }, 5000);
+  }, 500);
 
   //Clear the pressedLetters. 
   setPressedLetters('');
