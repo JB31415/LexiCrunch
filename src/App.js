@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import './style.css';
 import soundEffect from "./pop-sound.wav";
@@ -262,23 +262,14 @@ const handleLetterClick = (letter, word, index) => {
   }
 
 //used for wordSearch so that users cannot submit the exact same guess in succession
-let onCooldown = false;
+let onCooldown = useRef(false);
 
 //searches for word played from index
 const wordSearch = async () => {
 
-//If still in cooldown, do nothing
-if (onCooldown) {
-  return;
-}
+  if (!onCooldown.current) {
 
-//Set cooldown to true
-onCooldown = true;
-
-//Set a 1000 ms timer to reset the cooldown. User cannot call submit again in this time
-setTimeout(() => {
-  onCooldown = false;
-}, 1000);
+  onCooldown.current = true
 
   //If submitted word is in the dictionary...
   if (dictList.includes(pressedLetters.toLowerCase())) {
@@ -304,6 +295,13 @@ setTimeout(() => {
     setRandomWord2((prevLetters) => (prevLetters + pressedLetters.toLowerCase()));
 
   }
+
+  }
+
+  // disable cooldown after 1000 ms delay
+  setTimeout(() => {
+    onCooldown.current = false;
+  }, 5000);
 
   //Clear the pressedLetters. 
   setPressedLetters('');
@@ -504,8 +502,7 @@ return(
       <div className="Interface-keys">
     <button
       className={`submit-button ${pressedLetters.length < 3 ? 'tooShort' : ''}`}
-      onClick={pressedLetters.length >= 3 ? wordSearch : null}
-    >
+      onClick={pressedLetters.length >= 3 ? wordSearch : null} disabled={onCooldown.current}>
       SUBMIT</button>
       </div>
     }
