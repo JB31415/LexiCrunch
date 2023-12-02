@@ -273,12 +273,19 @@ const GameLexiCrunch = () => {
     );
   });
 
+  const onCooldown = useRef(false);
+
   // searches for word played from index
   const wordSearch = async () => {
 
+
+    if (!onCooldown.current)
+
+    onCooldown.current = true
+
     if (dictList.includes(pressedLetters.toLowerCase())) {
 
-      
+    
 
     pressedBlocks.forEach((block) => {
 
@@ -329,13 +336,18 @@ const GameLexiCrunch = () => {
       //No match found
     }
 
+
   }
-  else {
-    
-  }
+
+   // dispable cooldown after 500 ms delay
+   setTimeout(() => {
+    onCooldown.current = false;
+  }, 500);
 
   setPressedLetters('');
   setPressedBlocks([]);
+
+  
 
   };
 
@@ -551,7 +563,7 @@ const GameLexiCrunch = () => {
                   </div>
                 ))}
               </ul>
-              <button className="submit-button" style={{ fontSize: '2.5rem', color: 'white'}} onClick={wordSearch}>
+              <button className="submit-button" style={{ fontSize: '2.5rem', color: 'white'}} onClick={wordSearch} disabled={onCooldown.current}>
                 SUBMIT
               </button>
             </motion.div>
