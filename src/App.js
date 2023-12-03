@@ -1,5 +1,4 @@
-//Import React, and the CSS files
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import './style.css';
 
