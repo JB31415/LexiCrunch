@@ -30,11 +30,15 @@ export default function GameLexiCrunch() {
   useState is a react hook, specificially a state hook, updates and reacts when data or properties change
   */
   
-  //RandomWord1 and 2 are the two rows of letters which you click build words
-  const [randomWord1, setRandomWord1] = useState('');
-  const [randomWord2, setRandomWord2] = useState('');
+
+
+  //START REACT HOOKS
+
+  //row1 and 2 are the two rows of letters which you click to build words
+  const [row1, setRow1] = useState('');
+  const [row2, setRow2] = useState('');
   
-  //pressedLetters are the buttons which appear when clicking the randomWord row.
+  //pressedLetters are the buttons which appear when clicking the rows.
   const [pressedLetters, setPressedLetters] = useState('');
   
   //submitList is the list of submitted words at the bottom of the page
@@ -43,6 +47,7 @@ export default function GameLexiCrunch() {
   //score usestate, self-explanatory. 
   const [score, setScore] = useState(0);
   
+  //This hook determines whether or not the game elements should be visible. 
   const [game, setGame] = useState(true);
   
   //plays sound effect
@@ -50,18 +55,29 @@ export default function GameLexiCrunch() {
     interupter: true
   })
   
+  //React hook for our timer function
+  const [timeLeft, setTimeLeft] = useState(60);
+
+  //END REACT HOOKS
+
    //ends the game
   const EndGame = () => {
     setGame(false);
   };
   
-  const [timeLeft, setTimeLeft] = useState(60);
+  
   
   //Timer Logic
   useEffect(() => {
+    
+    //setInterval takes two parameters, a function and a integer. setInterval calls the passed function every integer amount of miliseconds. 
+    //For us, it counts down the timer and checks if it has time left every second. 
     const timerId = setInterval(() => {
+
+      //Count down timer
       setTimeLeft((prevTime) => prevTime - 1);
   
+      //If no more time, clear timer and end game
       if (timeLeft <= 0) {
         clearInterval(timerId);
         EndGame();
@@ -73,19 +89,18 @@ export default function GameLexiCrunch() {
   }, [timeLeft]); // Include timeLeft as a dependency to avoid potential issues
   
   
-  //RANDOMIZE MORE!
+  //shuffleWord randomizes the letters in a word. 
   const shuffleWord = (word) => {
     const shuffledWord = word.split('').sort(() => Math.random() - .5).join('');
     return shuffledWord;
   };
   
+
   useEffect(() => {
   
-    //createLetterStack();
-  
-    //Defines setRandomWord() : Gets random word from tenWordList.js, shuffles it around, and updates the state. 
-    setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
-    setRandomWord2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+    //Fills in value of row with setRow() : Gets random word from tenWordList.js, shuffles it around, and updates the state. 
+    setRow1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+    setRow2(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
   
     //ADD MORE WORDS LATER!
   
@@ -94,37 +109,43 @@ export default function GameLexiCrunch() {
   
   
   
-  /*This function is passed a value, it then calls setPressedLetters which is a setState function.
-  This is the onClick function used in the html. Joseph, 
+  /*  handleLetterClick handles the user clicking on the row of letters to form a word
+      
+      Parameters: letter is the individual letter, word is all the letters as a whole, index is the index where the letter is stored. 
   */
   const handleLetterClick = (letter, word, index) => {
   
-    //Parameters are passed correctly
-    console.log(letter + ' ' + index);
   
-    //if pressedletters < 10, add the letter clicked
+    //if pressedletters < 10...
     if (pressedLetters.length < 10){
+
+      //add the letter clicked to PressedLetters
       setPressedLetters((prevLetters) => prevLetters + letter);
-  
-      //setRandomWord1((rowLetters) => rowLetters.substring[0, index] + rowLetters.substring[index + 1]);
-  
-      setRandomWord2(word.substring(0, index) + word.substring(index + 1) );
+
+      //remove letter clicked from row2
+      setRow2(word.substring(0, index) + word.substring(index + 1) );
+      //Play pop sound effect
       playSound();
   
       }
+
+      //If you already have 10 letters, do nothing. 
       else{
   
       }
     }
   
-    //This is the onClick function for the submit list. It will remove the button and return it to the 
+    //This is the onClick function for the pressedLetters. It will remove the button and return it to the 
     //row above when clicked. Word is the entire submit list and index is the index of the clicked button 
     const handleDeleteClick = (letter, word, index) => {
       
       //When buttonClicked, return the button to the row above.
-      setRandomWord2((prevLetters) => prevLetters + letter);
+      setRow2((prevLetters) => prevLetters + letter);
+
       //Remove the button from the pressedLetters. 
       setPressedLetters(word.substring(0, index) + word.substring(index + 1));
+
+      //Play sound effect
       playSound();
   
     }
@@ -151,17 +172,17 @@ export default function GameLexiCrunch() {
     //If submitted word is in the dictionary...
     if (dictList.includes(pressedLetters.toLowerCase())) {
   
-      // Call fetchDatamuse for obscurity score
+      // Call fetchDatamuse for score
       await fetchDatamuse(pressedLetters); 
   
       //Updates the submitted list with the new word
       setSubmitList((prevSubmitList) => [...prevSubmitList, pressedLetters]);
   
       //Top row gets a new 10 letter word. 
-      setRandomWord1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
+      setRow1(shuffleWord(tenWordList[Math.floor(Math.random() * tenWordList.length)]));
   
        //Top row is moved to the bottom row.
-      setRandomWord2(randomWord1);
+      setRow2(row1);
   
     } 
   
@@ -169,47 +190,55 @@ export default function GameLexiCrunch() {
     else {
   
       //return letters to top row
-      setRandomWord2((prevLetters) => (prevLetters + pressedLetters.toLowerCase()));
+      setRow2((prevLetters) => (prevLetters + pressedLetters.toLowerCase()));
   
     }
   
-    //Clear the pressedLetters. 
+    //Clear the pressedLetters regardless
     setPressedLetters('');
   
   };
   
+  //Regular expression used to extract data from DataMuse API
   function wordsinstring(string) {
   
+    //Regular Expression
     const regex = /\bword\b/g;
+
+    //Matches is the number of values regular expression found 
     const matches = string.match(regex);
   
-    const count = matches ? matches.length : 1;
+    //If no matches, just set to 1, minimum num of matches to avoid divide by 0 error
+    let count = matches ? matches.length : 1;
   
+    //Max matches is 1000
     if (count > 1000) {
       count = 1000;
     }
-  
-    console.log({count});
   
     return count;
   
   }
   
-  //computes the average score of a datamuse search
+  //Computes the average score of a datamuse search
   //NOTE: currently only used for computing single score for spellalike words.
   function datamuseScore(string) {
   
     //counts the number of scores for a word
     const regex = /"score":(\d+)/g;
   
+    //Find every match for regular expression
     const matches = string.match(regex);
   
     let totalScore = 0;
   
+    //If there were matches...
     if (matches) {
   
+      //For each match...
       matches.forEach((match) => {
   
+        //Get the score, and add it to the total score
         const score = parseInt(match.split(":")[1]);
         totalScore += score;
   
@@ -217,66 +246,80 @@ export default function GameLexiCrunch() {
   
     }
   
+    //If there are matches, calculate average score, else set to 1. 
     const averageScore = matches ? totalScore / matches.length : 1;
   
-    console.log(string + ' matches ' + matches + ' totalScore ' + totalScore + ' average score: ' + averageScore);
+    //console.log(string + ' matches ' + matches + ' totalScore ' + totalScore + ' average score: ' + averageScore);
   
     return averageScore;
   
   }
   
+  //fetchDataMuse calculates the LexiScore and updates the scoreState with it
   const fetchDatamuse = async (word) => {
   
     try {
       
-      console.log('related words: ');
+      //console.log('related words: ');
   
+      //Get related words...
       let relatedresponse = await fetch(`https://api.datamuse.com/words?rel_trg=${word}&max=1000`);
       let relateddata = await relatedresponse.json();
       let relatedstring = JSON.stringify(relateddata);
       let numRelatedWords = wordsinstring(relatedstring);
   
-      console.log('spellalikes: ');
+      //console.log('spellalikes: ');
   
+      //Get words spelled similarly
       let spelledresponse = await fetch(`https://api.datamuse.com/words?sp=${word}&max=1`);
       let spelleddata = await spelledresponse.json();
       let spelledstring = JSON.stringify(spelleddata);
       let numSpelledSimilar = datamuseScore(spelledstring);
   
-      console.log('soundalikes: ');
+      //console.log('soundalikes: ');
   
+      //Get words that sound alike. 
       let soundresponse = await fetch(`https://api.datamuse.com/words?sl=${word}&max=1000`);
       let sounddata = await soundresponse.json();
       let soundstring = JSON.stringify(sounddata);
       let numSoundalikes = wordsinstring(soundstring);
   
+      //Get frequency score of word
       const fscoreresponse = await fetch(`https://api.datamuse.com/words?sp=${word}&md=f&max=1`);
       const fscoredata = await fscoreresponse.json();
   
+      //Extract JSON file
       let fscore = JSON.stringify(fscoredata);
-  
+
+      //Get first index 
       let fstart = fscore.indexOf('f:');
-  
+
+      //create a string to store score
       let fscorestring = '';
   
+      //From fstart index to end, add the score character to fscorestring. 
+      //Essentially, you're just copying the score string from DataMuse.  
       for (let i = fstart + 2; i < fscore.length; i++) {
         if (fscore[i] === '"') {
           break; // Break the loop when a closing quote is encountered
       }
-  
-      fscorestring += fscore[i];
       
+      //Add character to string
+      fscorestring += fscore[i];
+
+
     }
   
-      console.log(`fscorestring: ${fscorestring}`);
+      //console.log(`fscorestring: ${fscorestring}`);
   
+      //Calculate the inverse of individual metrics, times by 1000, and take ceiling to get LexiScore.  
       let lexiscore = Math.ceil(
   
         ((1 / parseFloat(numSpelledSimilar)) + (1 / parseFloat(numRelatedWords)) + (1 / parseFloat(numSoundalikes)) + (1 / parseFloat(fscorestring))) * 1000
   
       );
   
-      console.log('lexiscore: ' + lexiscore);
+      //console.log('lexiscore: ' + lexiscore);
   
       //users receive 0 points if same word is used in same round
       if (submitList.includes(pressedLetters.toLowerCase())) {
@@ -284,7 +327,8 @@ export default function GameLexiCrunch() {
         lexiscore = 0;
   
       }
-  
+      
+      //Update score state with LexiScore
       updateScore(lexiscore);
   
     } catch (error) {
@@ -296,19 +340,10 @@ export default function GameLexiCrunch() {
   // updates the score after each valid word.
   const updateScore = (newScore) =>
   {
-  
-      //Why are updateScore and setScore two different functions? 
-  
-      // replace score function with Collen's
-          //score += newScore; 
-          //score += newScore;
-          setScore(prevScore => prevScore + newScore);
-  
-          //console.log(score + "+");
-  
+    setScore(prevScore => prevScore + newScore);
   };  
   
-  //parameters are a word representing the row and the onClickFunction that gets called by onClick
+  //GenerateLetterTiles fills in the rows with letters and adds the function you want to be onClick
   const generateLetterTiles = (word, onClickFunction) => {
   
     //console.log(word);
@@ -317,32 +352,15 @@ export default function GameLexiCrunch() {
     return (
   
       <div className="button-row">
-  
         {letters.map((letter, index) => (
-  
-  
-          /*
-          <button id = {"buttonNum" + index}  key={index} className="letter-button" onClick={() => onClick(letter, index)}>
-  
-            {letter}
-  
-          </button>
-  */        
-  
+
           <button  className="letter-button" onClick={() => onClickFunction(letter, word, index)}>
-  
             {letter}
-  
           </button>
-  
-  
-  
         ))}
-  
       </div>
   
     );
-  
         };
   
   //Return GameLexiCrunch, basically returns all the html to make LexiCrunch. 
@@ -360,12 +378,12 @@ export default function GameLexiCrunch() {
       {game && <div>{timeLeft}</div>}
       {game &&
         <div id="first-row" className="letter-row">
-          {generateLetterTiles(randomWord1, handleLetterClick)}
+          {generateLetterTiles(row1, handleLetterClick)}
         </div>
       }
       {game &&
         <div id="second-row" className="letter-row">
-          {generateLetterTiles(randomWord2, handleLetterClick)}
+          {generateLetterTiles(row2, handleLetterClick)}
         </div>
       }
       {game &&

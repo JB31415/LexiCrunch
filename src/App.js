@@ -31,22 +31,25 @@ const startGame = async event => {
   <GameLexiCrunch> is a react component containing all the logic of the game, that way we can create and destroy it with 
   the render() method. 
   
-  When we render something, we replace all internal elements with the new component. This means rendering a <StartScreen> 
-  component using the same root will replace <GameLexiCrunch> 
+  When we render something, we replace all internal elements with the new component. Instructions for the game 
+  are stored in public/index.html, under the playArea ID, when game is rendered, it replaces it. 
   */
+
 
   //Render Lexicrunch using the root defined directly above this function.
   root.render(<GameLexiCrunch></GameLexiCrunch>);
 }
 
 //App is the main application without the LexiCrunch play area. 
+
 const App = () => {
 
-  //isMusicPlaying is a boolean set to false as default, controls the 
+  //isMusicPlaying is a boolean set to false as default, controls music state. This should be a seperate component but it's functionally equivalent for now. 
   const[isMusicPlaying, setIsMusicPlaying] = useState(false);
 
-  //Logic for music
+  //Logic for music using useEffect hook. 
   useEffect(() => {
+
     // Create an audio element
     const backgroundMusic = new Audio(music);
 
@@ -55,7 +58,7 @@ const App = () => {
     backgroundMusic.volume = 0.35;
     backgroundMusic.interupter = true;
 
-    //If true, play else, pause. 
+    //If state == true, play music else, pause. 
     if (isMusicPlaying) {
       backgroundMusic.play();
     } else {
@@ -69,13 +72,9 @@ const App = () => {
     };
   }, [isMusicPlaying]);
 
+  //Toggle function to pass to Music Button
   const toggleMusic = () => {
-    if(!isMusicPlaying){
-      setIsMusicPlaying(true);
-    }
-    else{
-      setIsMusicPlaying(false);
-    }
+    setIsMusicPlaying(!isMusicPlaying);
   }
 
   //Return the StartGame and the Music Button. 
